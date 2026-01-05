@@ -3,45 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Ghana Salons</title>
+    <title>Admin Dashboard - Ghana Salon Booking</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="container">
-            <h1>📊 Admin Dashboard</h1>
-            <p>Manage your salon appointments</p>
+            <div class="logo">
+                <h1>🪒 Admin Dashboard</h1>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="admin.html" class="active">Dashboard</a>
+                <button class="btn btn-small" onclick="logout()">Logout</button>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
-        <div class="admin-controls">
-            <button class="btn-secondary" onclick="window.location.href='index.html'">← Back to Bookings</button>
-            <button class="btn-danger" onclick="clearAllAppointments()">Clear All Data</button>
-        </div>
-
-        <div class="salon-tabs">
-            <button class="tab-btn active" onclick="showSalon('Kofi's Barbershop')">Kofi's Barbershop</button>
-            <button class="tab-btn" onclick="showSalon('Ama's Hair Salon')">Ama's Hair Salon</button>
-        </div>
-
-        <div id="appointmentsList" class="appointments-container">
-            <!-- Appointments will be loaded here -->
-        </div>
-    </main>
-
-    <footer>
+    <!-- Login Screen -->
+    <section id="loginSection" class="login-section">
         <div class="container">
-            <p>&copy; 2026 Ghana Salon Booking System - Admin Panel</p>
+            <div class="login-box">
+                <h2>Admin Login</h2>
+                <p>Please select your business to view appointments</p>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="businessSelect">Select Your Business</label>
+                        <select id="businessSelect" required>
+                            <option value="">Choose...</option>
+                            <option value="barber">Kofi's Classic Cuts (Barber)</option>
+                            <option value="salon">Ama's Beauty Haven (Salon)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" required placeholder="Enter password">
+                        <small class="help-text">Demo password: admin123</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">Login</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <section id="dashboardSection" class="dashboard-section" style="display: none;">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 id="businessName">Loading...</h2>
+                <div class="dashboard-actions">
+                    <button class="btn btn-secondary" onclick="filterAppointments('all')">All</button>
+                    <button class="btn btn-secondary" onclick="filterAppointments('today')">Today</button>
+                    <button class="btn btn-secondary" onclick="filterAppointments('upcoming')">Upcoming</button>
+                    <button class="btn btn-danger-outline" onclick="clearAllAppointments()">Clear All</button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3 id="totalBookings">0</h3>
+                        <p>Total Bookings</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-info">
+                        <h3 id="todayBookings">0</h3>
+                        <p>Today's Appointments</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3 id="totalRevenue">GHS 0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <h3 id="upcomingCount">0</h3>
+                        <p>Upcoming</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments Table -->
+            <div class="appointments-section">
+                <h3>Appointments</h3>
+                <div class="table-container">
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Service</th>
+                                <th>Price</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentsTableBody">
+                            <tr>
+                                <td colspan="8" class="no-data">No appointments yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h2>Confirm Delete</h2>
+            <p>Are you sure you want to delete this appointment?</p>
+            <div class="modal-actions">
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Ghana Salon Booking. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="script.js"></script>
-    <script>
-        // Load appointments when page loads
-        window.onload = function() {
-            loadAppointments('Kofi's Barbershop');
-        };
-    </script>
 </body>
 </html>

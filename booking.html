@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Ghana Salon Booking</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🪒 Ghana Salon Booking</h1>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="admin.html" class="admin-link">Admin Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-container">
+                <div class="business-header" id="businessHeader">
+                    <!-- Business info will be loaded here -->
+                </div>
+
+                <div class="booking-form-container">
+                    <h2>Book Your Appointment</h2>
+                    <form id="bookingForm" class="booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerName">Full Name *</label>
+                                <input type="text" id="customerName" required placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerPhone">Phone Number *</label>
+                                <input type="tel" id="customerPhone" required placeholder="0XX XXX XXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerEmail">Email (Optional)</label>
+                            <input type="email" id="customerEmail" placeholder="your@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="serviceSelect">Select Service *</label>
+                            <select id="serviceSelect" required>
+                                <option value="">Choose a service...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointmentDate">Date *</label>
+                                <input type="date" id="appointmentDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime">Time *</label>
+                                <select id="appointmentTime" required>
+                                    <option value="">Select time...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="specialRequests">Special Requests (Optional)</label>
+                            <textarea id="specialRequests" rows="3" placeholder="Any specific requests or preferences..."></textarea>
+                        </div>
+
+                        <div class="price-summary">
+                            <div class="price-row">
+                                <span>Service Price:</span>
+                                <span class="price" id="servicePrice">GHS 0</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Duration:</span>
+                                <span id="serviceDuration">-</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-large">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="success-icon">✅</div>
+            <h2>Booking Confirmed!</h2>
+            <p>Your appointment has been successfully booked.</p>
+            <div class="booking-details" id="bookingDetails"></div>
+            <button class="btn btn-primary" onclick="closeModal()">Done</button>
+            <button class="btn btn-secondary" onclick="location.href='index.html'">Book Another</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Ghana Salon Booking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

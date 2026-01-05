@@ -3,123 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment - Ghana Salons</title>
+    <title>Ghana Salon Booking - Book Your Appointment</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="container">
-            <h1>🪒 Ghana Salon Booking</h1>
-            <p>Book your appointment with top salons in Ghana</p>
+            <div class="logo">
+                <h1>🪒 Ghana Salon Booking</h1>
+            </div>
+            <nav>
+                <a href="index.html" class="active">Home</a>
+                <a href="admin.html" class="admin-link">Admin Login</a>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
-        <section class="salons-grid">
-            <!-- Barbershop -->
-            <div class="salon-card">
-                <div class="salon-image barber-bg">
-                    <h2>✂️ Kofi's Barbershop</h2>
-                </div>
-                <div class="salon-details">
-                    <p><strong>Location:</strong> Accra, Ghana</p>
-                    <p><strong>Services:</strong> Haircuts, Shaving, Beard Styling</p>
-                    <p><strong>Price Range:</strong> GH₵20 - GH₵50</p>
-                    <button class="btn-primary" onclick="openBookingForm('Kofi's Barbershop')">Book Now</button>
-                </div>
-            </div>
-
-            <!-- Hair Salon -->
-            <div class="salon-card">
-                <div class="salon-image salon-bg">
-                    <h2>💇‍♀️ Ama's Hair Salon</h2>
-                </div>
-                <div class="salon-details">
-                    <p><strong>Location:</strong> Kumasi, Ghana</p>
-                    <p><strong>Services:</strong> Braiding, Weaving, Natural Hair Care</p>
-                    <p><strong>Price Range:</strong> GH₵30 - GH₵200</p>
-                    <button class="btn-primary" onclick="openBookingForm('Ama's Hair Salon')">Book Now</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Booking Form Modal -->
-        <div id="bookingModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeBookingForm()">&times;</span>
-                <h2>Book Appointment</h2>
-                <form id="bookingForm">
-                    <input type="hidden" id="salonName" name="salonName">
-
-                    <div class="form-group">
-                        <label>Your Name *</label>
-                        <input type="text" id="customerName" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phone Number *</label>
-                        <input type="tel" id="customerPhone" required placeholder="0XX XXX XXXX">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="customerEmail" placeholder="example@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Service *</label>
-                        <select id="service" required>
-                            <option value="">Select Service</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Date *</label>
-                        <input type="date" id="appointmentDate" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Time *</label>
-                        <select id="appointmentTime" required>
-                            <option value="">Select Time</option>
-                            <option value="09:00 AM">09:00 AM</option>
-                            <option value="10:00 AM">10:00 AM</option>
-                            <option value="11:00 AM">11:00 AM</option>
-                            <option value="12:00 PM">12:00 PM</option>
-                            <option value="01:00 PM">01:00 PM</option>
-                            <option value="02:00 PM">02:00 PM</option>
-                            <option value="03:00 PM">03:00 PM</option>
-                            <option value="04:00 PM">04:00 PM</option>
-                            <option value="05:00 PM">05:00 PM</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Additional Notes</label>
-                        <textarea id="notes" rows="3" placeholder="Any special requests?"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-primary btn-block">Confirm Booking</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Success Message -->
-        <div id="successModal" class="modal">
-            <div class="modal-content success-message">
-                <span class="close" onclick="closeSuccessMessage()">&times;</span>
-                <h2>✅ Booking Confirmed!</h2>
-                <p>Your appointment has been successfully booked.</p>
-                <p>You will receive a confirmation shortly.</p>
-                <button class="btn-primary" onclick="closeSuccessMessage()">Close</button>
-            </div>
-        </div>
-    </main>
-
-    <footer>
+    <section class="hero">
         <div class="container">
-            <p>&copy; 2026 Ghana Salon Booking System</p>
-            <a href="admin.html" class="admin-link">Admin Login</a>
+            <div class="hero-content">
+                <h2>Book Your Perfect Look</h2>
+                <p>Professional barbers and hairstylists in Ghana at your service</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="businesses">
+        <div class="container">
+            <h2 class="section-title">Choose Your Salon</h2>
+            <div class="business-grid">
+                <!-- Barber Shop -->
+                <div class="business-card">
+                    <div class="business-image barber-bg">
+                        <span class="business-icon">✂️</span>
+                    </div>
+                    <div class="business-info">
+                        <h3>Kofi's Classic Cuts</h3>
+                        <p class="location">📍 Osu, Accra</p>
+                        <p class="description">Premium barbershop specializing in modern cuts, fades, and traditional styles</p>
+                        <div class="services-preview">
+                            <span class="tag">Haircuts</span>
+                            <span class="tag">Beard Styling</span>
+                            <span class="tag">Hot Towel Shave</span>
+                        </div>
+                        <div class="business-stats">
+                            <div class="stat">
+                                <strong>⭐ 4.9</strong>
+                                <span>Rating</span>
+                            </div>
+                            <div class="stat">
+                                <strong>200+</strong>
+                                <span>Bookings</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="selectBusiness('barber')">Book Appointment</button>
+                    </div>
+                </div>
+
+                <!-- Hair Salon -->
+                <div class="business-card">
+                    <div class="business-image salon-bg">
+                        <span class="business-icon">💇‍♀️</span>
+                    </div>
+                    <div class="business-info">
+                        <h3>Ama's Beauty Haven</h3>
+                        <p class="location">📍 East Legon, Accra</p>
+                        <p class="description">Full-service hair salon offering braiding, weaving, relaxing, and natural hair care</p>
+                        <div class="services-preview">
+                            <span class="tag">Braids</span>
+                            <span class="tag">Weaves</span>
+                            <span class="tag">Natural Hair</span>
+                        </div>
+                        <div class="business-stats">
+                            <div class="stat">
+                                <strong>⭐ 4.8</strong>
+                                <span>Rating</span>
+                            </div>
+                            <div class="stat">
+                                <strong>350+</strong>
+                                <span>Bookings</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="selectBusiness('salon')">Book Appointment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Book With Us?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Real-Time Booking</h3>
+                    <p>Instant confirmation with available time slots</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💳</div>
+                    <h3>Secure Payment</h3>
+                    <p>Pay online or at the salon</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Reminders</h3>
+                    <p>Get notified before your appointment</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✅</div>
+                    <h3>Easy Rescheduling</h3>
+                    <p>Change or cancel anytime</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Ghana Salon Booking. All rights reserved.</p>
+            <p>Serving Accra and beyond 🇬🇭</p>
         </div>
     </footer>
 

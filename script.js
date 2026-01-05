@@ -1,196 +1,328 @@
-// Salon services configuration
-const salonServices = {
-    "Kofi's Barbershop": [
-        "Regular Haircut - GH₵20",
-        "Premium Haircut - GH₵35",
-        "Shaving - GH₵15",
-        "Beard Styling - GH₵25",
-        "Hair & Beard Combo - GH₵50"
-    ],
-    "Ama's Hair Salon": [
-        "Box Braids - GH₵150",
-        "Cornrows - GH₵80",
-        "Weaving - GH₵200",
-        "Hair Treatment - GH₵60",
-        "Natural Hair Styling - GH₵100",
-        "Relaxer Service - GH₵70"
-    ]
+// Ghana Salon Booking System - Complete JavaScript
+
+// Business Data
+const businesses = {
+    barber: {
+        id: 'barber',
+        name: "Kofi's Classic Cuts",
+        location: "Osu, Accra",
+        type: "Barbershop",
+        services: [
+            { id: 1, name: "Classic Haircut", price: 50, duration: "45 min" },
+            { id: 2, name: "Fade Cut", price: 60, duration: "1 hour" },
+            { id: 3, name: "Beard Trim", price: 25, duration: "30 min" },
+            { id: 4, name: "Hot Towel Shave", price: 40, duration: "45 min" },
+            { id: 5, name: "Haircut + Beard Combo", price: 70, duration: "1.5 hours" },
+            { id: 6, name: "Kids Haircut", price: 35, duration: "30 min" }
+        ]
+    },
+    salon: {
+        id: 'salon',
+        name: "Ama's Beauty Haven",
+        location: "East Legon, Accra",
+        type: "Hair Salon",
+        services: [
+            { id: 1, name: "Box Braids", price: 250, duration: "4 hours" },
+            { id: 2, name: "Ghana Weaving", price: 150, duration: "3 hours" },
+            { id: 3, name: "Cornrows", price: 80, duration: "2 hours" },
+            { id: 4, name: "Hair Relaxing", price: 120, duration: "2 hours" },
+            { id: 5, name: "Natural Hair Care", price: 100, duration: "1.5 hours" },
+            { id: 6, name: "Hair Coloring", price: 200, duration: "3 hours" },
+            { id: 7, name: "Weave Installation", price: 180, duration: "2.5 hours" },
+            { id: 8, name: "Wash & Blow Dry", price: 60, duration: "1 hour" }
+        ]
+    }
 };
 
-let currentSalon = '';
+// Available time slots (9 AM - 6 PM)
+const timeSlots = [
+    "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM",
+    "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
+    "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM",
+    "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
+    "05:00 PM", "05:30 PM", "06:00 PM"
+];
 
-// Open booking form
-function openBookingForm(salonName) {
-    currentSalon = salonName;
-    document.getElementById('salonName').value = salonName;
-    document.getElementById('bookingModal').style.display = 'block';
-
-    // Set minimum date to today
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('appointmentDate').setAttribute('min', today);
-
-    // Load services for selected salon
-    loadServices(salonName);
-
-    // Reset form
-    document.getElementById('bookingForm').reset();
-    document.getElementById('salonName').value = salonName;
+// Storage functions
+function saveAppointment(businessId, appointment) {
+    const appointments = getAppointments(businessId);
+    appointments.push(appointment);
+    localStorage.setItem(`appointments_${businessId}`, JSON.stringify(appointments));
 }
 
-// Close booking form
-function closeBookingForm() {
-    document.getElementById('bookingModal').style.display = 'none';
+function getAppointments(businessId) {
+    const data = localStorage.getItem(`appointments_${businessId}`);
+    return data ? JSON.parse(data) : [];
 }
 
-// Load services for salon
-function loadServices(salonName) {
-    const serviceSelect = document.getElementById('service');
-    serviceSelect.innerHTML = '<option value="">Select Service</option>';
+function deleteAppointment(businessId, appointmentId) {
+    const appointments = getAppointments(businessId);
+    const filtered = appointments.filter(apt => apt.id !== appointmentId);
+    localStorage.setItem(`appointments_${businessId}`, JSON.stringify(filtered));
+}
 
-    const services = salonServices[salonName] || [];
-    services.forEach(service => {
+function clearAllAppointments() {
+    if (confirm('Are you sure you want to delete ALL appointments? This cannot be undone.')) {
+        const currentBusiness = sessionStorage.getItem('currentBusiness');
+        if (currentBusiness) {
+            localStorage.removeItem(`appointments_${currentBusiness}`);
+            loadDashboard();
+        }
+    }
+}
+
+// === HOME PAGE (index.html) ===
+function selectBusiness(businessId) {
+    sessionStorage.setItem('selectedBusiness', businessId);
+    window.location.href = 'booking.html';
+}
+
+// === BOOKING PAGE (booking.html) ===
+if (window.location.pathname.includes('booking.html')) {
+    const selectedBusiness = sessionStorage.getItem('selectedBusiness');
+
+    if (!selectedBusiness || !businesses[selectedBusiness]) {
+        alert('Please select a business first');
+        window.location.href = 'index.html';
+    } else {
+        initBookingPage(selectedBusiness);
+    }
+}
+
+function initBookingPage(businessId) {
+    const business = businesses[businessId];
+
+    // Display business header
+    const header = document.getElementById('businessHeader');
+    header.innerHTML = `
+        <h2>${business.name}</h2>
+        <p>📍 ${business.location}</p>
+    `;
+
+    // Populate services
+    const serviceSelect = document.getElementById('serviceSelect');
+    business.services.forEach(service => {
         const option = document.createElement('option');
-        option.value = service;
-        option.textContent = service;
+        option.value = service.id;
+        option.textContent = `${service.name} - GHS ${service.price} (${service.duration})`;
         serviceSelect.appendChild(option);
     });
-}
 
-// Handle form submission
-document.addEventListener('DOMContentLoaded', function() {
-    const bookingForm = document.getElementById('bookingForm');
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    // Populate time slots
+    const timeSelect = document.getElementById('appointmentTime');
+    timeSlots.forEach(time => {
+        const option = document.createElement('option');
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
+    });
 
-            // Collect form data
-            const appointment = {
-                id: Date.now(),
-                salon: document.getElementById('salonName').value,
-                customerName: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                email: document.getElementById('customerEmail').value,
-                service: document.getElementById('service').value,
-                date: document.getElementById('appointmentDate').value,
-                time: document.getElementById('appointmentTime').value,
-                notes: document.getElementById('notes').value,
-                bookingDate: new Date().toLocaleString(),
-                status: 'Pending'
-            };
+    // Set minimum date to today
+    const dateInput = document.getElementById('appointmentDate');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
 
-            // Save to localStorage
-            saveAppointment(appointment);
-
-            // Close booking form
-            closeBookingForm();
-
-            // Show success message
-            document.getElementById('successModal').style.display = 'block';
-        });
-    }
-});
-
-// Save appointment to localStorage
-function saveAppointment(appointment) {
-    let appointments = JSON.parse(localStorage.getItem('salonAppointments')) || [];
-    appointments.push(appointment);
-    localStorage.setItem('salonAppointments', JSON.stringify(appointments));
-}
-
-// Close success message
-function closeSuccessMessage() {
-    document.getElementById('successModal').style.display = 'none';
-}
-
-// Close modal when clicking outside
-window.onclick = function(event) {
-    const bookingModal = document.getElementById('bookingModal');
-    const successModal = document.getElementById('successModal');
-
-    if (event.target == bookingModal) {
-        closeBookingForm();
-    }
-    if (event.target == successModal) {
-        closeSuccessMessage();
-    }
-}
-
-// ADMIN FUNCTIONS
-let currentAdminSalon = '';
-
-// Show appointments for selected salon
-function showSalon(salonName) {
-    currentAdminSalon = salonName;
-
-    // Update active tab
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.textContent === salonName) {
-            tab.classList.add('active');
+    // Update price when service changes
+    serviceSelect.addEventListener('change', function() {
+        const serviceId = parseInt(this.value);
+        const service = business.services.find(s => s.id === serviceId);
+        if (service) {
+            document.getElementById('servicePrice').textContent = `GHS ${service.price}`;
+            document.getElementById('serviceDuration').textContent = service.duration;
         }
     });
 
-    // Load appointments
-    loadAppointments(salonName);
+    // Handle form submission
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const serviceId = parseInt(document.getElementById('serviceSelect').value);
+        const service = business.services.find(s => s.id === serviceId);
+
+        const appointment = {
+            id: Date.now(),
+            businessId: businessId,
+            customerName: document.getElementById('customerName').value,
+            customerPhone: document.getElementById('customerPhone').value,
+            customerEmail: document.getElementById('customerEmail').value,
+            service: service.name,
+            servicePrice: service.price,
+            date: document.getElementById('appointmentDate').value,
+            time: document.getElementById('appointmentTime').value,
+            specialRequests: document.getElementById('specialRequests').value,
+            createdAt: new Date().toISOString()
+        };
+
+        saveAppointment(businessId, appointment);
+
+        // Show success modal
+        showSuccessModal(appointment, business);
+    });
 }
 
-// Load appointments for admin dashboard
-function loadAppointments(salonName) {
-    const appointments = JSON.parse(localStorage.getItem('salonAppointments')) || [];
-    const salonAppointments = appointments.filter(apt => apt.salon === salonName);
+function showSuccessModal(appointment, business) {
+    const modal = document.getElementById('successModal');
+    const details = document.getElementById('bookingDetails');
 
-    const container = document.getElementById('appointmentsList');
+    details.innerHTML = `
+        <p><strong>Business:</strong> ${business.name}</p>
+        <p><strong>Service:</strong> ${appointment.service}</p>
+        <p><strong>Date:</strong> ${formatDate(appointment.date)}</p>
+        <p><strong>Time:</strong> ${appointment.time}</p>
+        <p><strong>Price:</strong> GHS ${appointment.servicePrice}</p>
+        <p><strong>Customer:</strong> ${appointment.customerName}</p>
+        <p><strong>Phone:</strong> ${appointment.customerPhone}</p>
+    `;
 
-    if (salonAppointments.length === 0) {
-        container.innerHTML = '<div class="no-appointments">📅 No appointments yet for ' + salonName + '</div>';
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('successModal').classList.remove('active');
+    document.getElementById('bookingForm').reset();
+    document.getElementById('servicePrice').textContent = 'GHS 0';
+    document.getElementById('serviceDuration').textContent = '-';
+}
+
+// === ADMIN PAGE (admin.html) ===
+if (window.location.pathname.includes('admin.html')) {
+    document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const businessId = document.getElementById('businessSelect').value;
+        const password = document.getElementById('adminPassword').value;
+
+        // Simple password check (in real app, use proper authentication)
+        if (password === 'admin123') {
+            sessionStorage.setItem('currentBusiness', businessId);
+            sessionStorage.setItem('adminLoggedIn', 'true');
+            showDashboard();
+        } else {
+            alert('Incorrect password. Demo password is: admin123');
+        }
+    });
+
+    // Check if already logged in
+    if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+        showDashboard();
+    }
+}
+
+function showDashboard() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('dashboardSection').style.display = 'block';
+    loadDashboard();
+}
+
+function loadDashboard() {
+    const businessId = sessionStorage.getItem('currentBusiness');
+    if (!businessId) return;
+
+    const business = businesses[businessId];
+    const appointments = getAppointments(businessId);
+
+    // Update business name
+    document.getElementById('businessName').textContent = business.name;
+
+    // Calculate stats
+    const today = new Date().toISOString().split('T')[0];
+    const todayAppointments = appointments.filter(apt => apt.date === today);
+    const upcomingAppointments = appointments.filter(apt => apt.date >= today);
+    const totalRevenue = appointments.reduce((sum, apt) => sum + apt.servicePrice, 0);
+
+    // Update stat cards
+    document.getElementById('totalBookings').textContent = appointments.length;
+    document.getElementById('todayBookings').textContent = todayAppointments.length;
+    document.getElementById('totalRevenue').textContent = `GHS ${totalRevenue}`;
+    document.getElementById('upcomingCount').textContent = upcomingAppointments.length;
+
+    // Load appointments table
+    loadAppointmentsTable(appointments);
+}
+
+function loadAppointmentsTable(appointments) {
+    const tbody = document.getElementById('appointmentsTableBody');
+
+    if (appointments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="no-data">No appointments yet</td></tr>';
         return;
     }
 
-    // Sort by date
-    salonAppointments.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    let html = '<h2 style="color: #667eea; margin-bottom: 20px;">' + salonName + ' Appointments (' + salonAppointments.length + ')</h2>';
-
-    salonAppointments.forEach(apt => {
-        html += `
-            <div class="appointment-card">
-                <h3>👤 ${apt.customerName}</h3>
-                <div class="appointment-info">
-                    <p><strong>📞 Phone:</strong> ${apt.phone}</p>
-                    <p><strong>📧 Email:</strong> ${apt.email || 'N/A'}</p>
-                    <p><strong>💇 Service:</strong> ${apt.service}</p>
-                    <p><strong>📅 Date:</strong> ${apt.date}</p>
-                    <p><strong>🕐 Time:</strong> ${apt.time}</p>
-                    <p><strong>📝 Status:</strong> <span style="color: orange;">${apt.status}</span></p>
-                </div>
-                ${apt.notes ? '<p><strong>Notes:</strong> ' + apt.notes + '</p>' : ''}
-                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Booked on: ${apt.bookingDate}</p>
-                <button class="btn-danger" onclick="deleteAppointment(${apt.id})">Delete Appointment</button>
-            </div>
-        `;
+    // Sort by date and time (most recent first)
+    appointments.sort((a, b) => {
+        if (a.date === b.date) {
+            return a.time.localeCompare(b.time);
+        }
+        return b.date.localeCompare(a.date);
     });
 
-    container.innerHTML = html;
+    tbody.innerHTML = appointments.map(apt => `
+        <tr>
+            <td>${formatDate(apt.date)}</td>
+            <td>${apt.time}</td>
+            <td>${apt.customerName}</td>
+            <td>${apt.customerPhone}</td>
+            <td>${apt.service}</td>
+            <td><strong>GHS ${apt.servicePrice}</strong></td>
+            <td>${apt.specialRequests || '-'}</td>
+            <td>
+                <button class="btn-delete" onclick="deleteAppointmentHandler('${apt.id}')">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    `).join('');
 }
 
-// Delete single appointment
-function deleteAppointment(id) {
-    if (confirm('Are you sure you want to delete this appointment?')) {
-        let appointments = JSON.parse(localStorage.getItem('salonAppointments')) || [];
-        appointments = appointments.filter(apt => apt.id !== id);
-        localStorage.setItem('salonAppointments', JSON.stringify(appointments));
-        loadAppointments(currentAdminSalon);
+let appointmentToDelete = null;
+
+function deleteAppointmentHandler(appointmentId) {
+    appointmentToDelete = appointmentId;
+    document.getElementById('deleteModal').classList.add('active');
+}
+
+function confirmDelete() {
+    if (appointmentToDelete) {
+        const businessId = sessionStorage.getItem('currentBusiness');
+        deleteAppointment(businessId, parseInt(appointmentToDelete));
+        loadDashboard();
+        closeDeleteModal();
     }
 }
 
-// Clear all appointments
-function clearAllAppointments() {
-    if (confirm('Are you sure you want to delete ALL appointments from ALL salons? This cannot be undone!')) {
-        localStorage.removeItem('salonAppointments');
-        if (currentAdminSalon) {
-            loadAppointments(currentAdminSalon);
-        }
-        alert('All appointments have been cleared!');
-    }
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('active');
+    appointmentToDelete = null;
 }
+
+function filterAppointments(filter) {
+    const businessId = sessionStorage.getItem('currentBusiness');
+    let appointments = getAppointments(businessId);
+    const today = new Date().toISOString().split('T')[0];
+
+    if (filter === 'today') {
+        appointments = appointments.filter(apt => apt.date === today);
+    } else if (filter === 'upcoming') {
+        appointments = appointments.filter(apt => apt.date >= today);
+    }
+
+    loadAppointmentsTable(appointments);
+}
+
+function logout() {
+    sessionStorage.removeItem('adminLoggedIn');
+    sessionStorage.removeItem('currentBusiness');
+    window.location.reload();
+}
+
+// Utility function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString + 'T00:00:00');
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Ghana Salon Booking System Loaded');
+});
