@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Ghana Salons</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Admin Dashboard</h1>
+            <p>Manage your salon appointments</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-controls">
+            <button class="btn-secondary" onclick="window.location.href='index.html'">← Back to Bookings</button>
+            <button class="btn-danger" onclick="clearAllAppointments()">Clear All Data</button>
+        </div>
+
+        <div class="salon-tabs">
+            <button class="tab-btn active" onclick="showSalon('Kofi's Barbershop')">Kofi's Barbershop</button>
+            <button class="tab-btn" onclick="showSalon('Ama's Hair Salon')">Ama's Hair Salon</button>
+        </div>
+
+        <div id="appointmentsList" class="appointments-container">
+            <!-- Appointments will be loaded here -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Ghana Salon Booking System - Admin Panel</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load appointments when page loads
+        window.onload = function() {
+            loadAppointments('Kofi's Barbershop');
+        };
+    </script>
+</body>
+</html>
