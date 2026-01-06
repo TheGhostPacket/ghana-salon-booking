@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Book appointments at top salons and barbershops in Ghana">
-    <meta name="theme-color" content="#FF6B35">
-    <title>Ghana Salon Booking - Book Your Appointment</title>
+    <title>Ghana Salon Booking - Professional Hair & Beauty Services</title>
+    <meta name="description" content="Book appointments with top barbers and hairstylists across Ghana">
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#FF6B35">
 </head>
 <body>
+    <div id="installBanner" class="install-banner" style="display: none;">
+        <div class="install-content">
+            <h4>📱 Install Ghana Salon Booking</h4>
+            <p>Quick access from your home screen</p>
+            <button onclick="installPWA()" class="btn btn-primary btn-small">Install Now</button>
+            <button onclick="closeInstallBanner()" class="btn-close">✕</button>
+        </div>
+    </div>
+
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -33,76 +41,66 @@
 
     <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <h2 data-i18n="hero_title">Book Your Perfect Look</h2>
-                <p data-i18n="hero_subtitle">Professional barbers and hairstylists across Ghana at your service</p>
-            </div>
+            <h2 data-i18n="hero_title">Book Your Perfect Look</h2>
+            <p data-i18n="hero_subtitle">Professional barbers and hairstylists across Ghana at your service</p>
+            <a href="#businesses" class="btn btn-primary btn-large" data-i18n="browse_salons">Browse Salons</a>
         </div>
     </section>
-
-    <!-- Location Filter -->
-    <section class="location-filter">
-        <div class="container">
-            <div class="filter-header">
-                <h3 data-i18n="select_city">Select Your City</h3>
-            </div>
-            <div class="location-buttons">
-                <button class="location-btn active" onclick="filterByLocation('all')" data-i18n="all_cities">All Cities</button>
-                <button class="location-btn" onclick="filterByLocation('accra')">Accra</button>
-                <button class="location-btn" onclick="filterByLocation('kumasi')">Kumasi</button>
-                <button class="location-btn" onclick="filterByLocation('takoradi')">Takoradi</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="businesses">
-        <div class="container">
-            <h2 class="section-title" data-i18n="choose_salon">Choose Your Salon</h2>
-            <div class="business-grid" id="businessGrid">
-                <!-- Businesses will be loaded by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Install PWA Banner -->
-    <div id="installBanner" class="install-banner" style="display: none;">
-        <div class="container">
-            <div class="install-content">
-                <span>📱</span>
-                <div>
-                    <strong data-i18n="install_app">Install Our App</strong>
-                    <p data-i18n="install_subtitle">Quick access from your home screen</p>
-                </div>
-                <button class="btn btn-primary btn-small" onclick="installPWA()" data-i18n="install_now">Install</button>
-                <button class="btn-close" onclick="closeInstallBanner()">✕</button>
-            </div>
-        </div>
-    </div>
 
     <section class="features">
         <div class="container">
-            <h2 class="section-title" data-i18n="why_book">Why Book With Us?</h2>
+            <h3 data-i18n="why_choose">Why Choose Ghana Salon Booking?</h3>
             <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon">⏰</div>
-                    <h3 data-i18n="feature_realtime">Real-Time Booking</h3>
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h4 data-i18n="feature_pwa">PWA Enabled</h4>
+                    <p data-i18n="feature_pwa_desc">Quick access from your home screen</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⏰</span>
+                    <h4 data-i18n="feature_realtime">Real-Time Booking</h4>
                     <p data-i18n="feature_realtime_desc">Instant confirmation with available time slots</p>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">💳</div>
-                    <h3 data-i18n="feature_payment">Secure Payment</h3>
+                <div class="feature-card">
+                    <span class="feature-icon">💳</span>
+                    <h4 data-i18n="feature_payment">Secure Payment</h4>
                     <p data-i18n="feature_payment_desc">Mobile Money, Card, or Pay at salon</p>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">⭐</div>
-                    <h3 data-i18n="feature_loyalty">Loyalty Rewards</h3>
+                <div class="feature-card">
+                    <span class="feature-icon">⭐</span>
+                    <h4 data-i18n="feature_loyalty">Loyalty Rewards</h4>
                     <p data-i18n="feature_loyalty_desc">Earn points with every booking</p>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">👥</div>
-                    <h3 data-i18n="feature_staff">Choose Your Stylist</h3>
-                    <p data-i18n="feature_staff_desc">Book with your favorite professional</p>
+                <div class="feature-card">
+                    <span class="feature-icon">👥</span>
+                    <h4 data-i18n="feature_choose">Choose Your Stylist</h4>
+                    <p data-i18n="feature_choose_desc">Book with your favorite professional</p>
                 </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💬</span>
+                    <h4 data-i18n="feature_support">24/7 Support</h4>
+                    <p data-i18n="feature_support_desc">Connect your preferred chat service (Tawk.to, Crisp, WhatsApp)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="businesses" id="businesses">
+        <div class="container">
+            <h3 data-i18n="choose_salon">Choose Your Salon</h3>
+
+            <div class="location-filters">
+                <h4 data-i18n="select_city">Select Your City</h4>
+                <div class="filter-buttons">
+                    <button class="location-btn active" onclick="filterByLocation('all')" data-i18n="all_cities">All Cities</button>
+                    <button class="location-btn" onclick="filterByLocation('accra')" data-i18n="city_accra">Accra</button>
+                    <button class="location-btn" onclick="filterByLocation('kumasi')" data-i18n="city_kumasi">Kumasi</button>
+                    <button class="location-btn" onclick="filterByLocation('takoradi')" data-i18n="city_takoradi">Takoradi</button>
+                </div>
+            </div>
+
+            <div class="business-grid" id="businessGrid">
+                <!-- Business cards will be loaded here by JavaScript -->
             </div>
         </div>
     </section>
@@ -110,33 +108,22 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footer_rights">All rights reserved.</span></p>
-            <p data-i18n="footer_serving">Serving Ghana nationwide</p> 🇬🇭
+            <p><small>Made with ❤️ for Ghana 🇬🇭</small></p>
         </div>
     </footer>
 
-    <!-- Live Chat Widget Placeholder -->
-    <div id="chatWidget" class="chat-widget">
-        <button class="chat-button" onclick="toggleChat()">
-            💬
-        </button>
-        <div class="chat-window" id="chatWindow" style="display: none;">
-            <div class="chat-header">
-                <strong data-i18n="chat_title">Chat Support</strong>
-                <button onclick="toggleChat()">✕</button>
-            </div>
-            <div class="chat-body">
-                <p data-i18n="chat_message">Connect your preferred chat service (Tawk.to, Crisp, WhatsApp)</p>
-                <a href="https://wa.me/233XXXXXXXXX" class="btn btn-primary btn-small" target="_blank">
-                    WhatsApp Us
-                </a>
-            </div>
-        </div>
-    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
+    <!-- Your Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="database-manager.js"></script>
     <script src="translations.js"></script>
     <script src="enhanced-script.js"></script>
+
+    <!-- Service Worker Registration -->
     <script>
-        // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
                 .then(reg => console.log('Service Worker registered'))

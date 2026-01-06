@@ -5,103 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Ghana Salon Booking</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo"><h1>🪒 Ghana Salon Booking</h1></div>
+            <div class="logo">
+                <h1>🪒 Ghana Salon Booking</h1>
+            </div>
             <nav>
                 <a href="index.html" data-i18n="nav_home">Home</a>
                 <a href="profile.html" class="active" data-i18n="nav_profile">My Profile</a>
-                <select id="languageSelector" class="language-selector">
-                    <option value="en">English</option>
-                    <option value="tw">Twi</option>
-                    <option value="ga">Ga</option>
-                    <option value="ee">Ewe</option>
-                </select>
+                <a href="admin.html" class="admin-link" data-i18n="nav_admin">Admin</a>
             </nav>
         </div>
     </header>
-    <section class="profile-section">
+
+    <section class="profile-section" id="loginPrompt">
         <div class="container">
-            <div class="profile-container">
-                <div id="loginPrompt" class="login-prompt">
-                    <h2 data-i18n="profile_login_title">Welcome Back!</h2>
-                    <p data-i18n="profile_login_subtitle">Enter your phone number to view your profile</p>
-                    <form id="profileLoginForm" class="profile-login-form">
-                        <div class="form-group">
-                            <label for="loginPhone" data-i18n="phone">Phone Number</label>
-                            <input type="tel" id="loginPhone" required placeholder="0XX XXX XXXX">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-large" data-i18n="view_profile">View My Profile</button>
-                    </form>
+            <div class="login-card">
+                <h2 data-i18n="profile_login">Login to Your Profile</h2>
+                <p data-i18n="profile_login_desc">Enter your phone number to view your bookings and loyalty points</p>
+                <form id="profileLoginForm">
+                    <div class="form-group">
+                        <label for="loginPhone" data-i18n="phone_number">Phone Number</label>
+                        <input type="tel" id="loginPhone" placeholder="0241234567" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="login">Login</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile-section" id="profileDashboard" style="display: none;">
+        <div class="container">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileInitials">GH</div>
+                <div class="profile-info">
+                    <h2 id="profileName">Customer</h2>
+                    <p id="profilePhone"></p>
+                    <button onclick="logoutProfile()" class="btn btn-secondary btn-small" data-i18n="logout">Logout</button>
                 </div>
-                <div id="profileDashboard" style="display: none;">
-                    <div class="profile-header">
-                        <div class="profile-avatar"><span id="profileInitials">GH</span></div>
-                        <div class="profile-info">
-                            <h2 id="profileName">Customer Name</h2>
-                            <p id="profilePhone">0XX XXX XXXX</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="logoutProfile()" data-i18n="logout">Logout</button>
+            </div>
+
+            <div class="loyalty-card">
+                <h3 data-i18n="loyalty_points">Loyalty Points</h3>
+                <div class="points-display">
+                    <span class="points-number" id="totalPoints">0</span>
+                    <span data-i18n="points">points</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="loyaltyProgress"></div>
+                </div>
+                <p><span id="pointsToReward">100</span> <span data-i18n="points_to_reward">points to next reward</span></p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4 data-i18n="total_bookings">Total Bookings</h4>
+                    <p class="stat-number" id="totalBookingsCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4 data-i18n="total_spent">Total Spent</h4>
+                    <p class="stat-number" id="totalSpent">GHS 0</p>
+                </div>
+                <div class="stat-card">
+                    <h4 data-i18n="favorite_service">Favorite Service</h4>
+                    <p class="stat-text" id="favoriteService">-</p>
+                </div>
+            </div>
+
+            <div class="booking-history">
+                <div class="section-header">
+                    <h3 data-i18n="booking_history">Booking History</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterHistory('all')" data-i18n="all">All</button>
+                        <button class="filter-btn" onclick="filterHistory('upcoming')" data-i18n="upcoming">Upcoming</button>
+                        <button class="filter-btn" onclick="filterHistory('past')" data-i18n="past">Past</button>
                     </div>
-                    <div class="loyalty-card">
-                        <div class="loyalty-content">
-                            <h3 data-i18n="loyalty_points">Loyalty Points</h3>
-                            <div class="points-display">
-                                <span class="points-big" id="totalPoints">0</span>
-                                <span data-i18n="points">points</span>
-                            </div>
-                            <div class="loyalty-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" id="loyaltyProgress" style="width: 0%"></div>
-                                </div>
-                                <p class="progress-text"><span id="pointsToReward">100</span> <span data-i18n="points_to_reward">points to next reward</span></p>
-                            </div>
-                        </div>
-                        <div class="loyalty-rewards">
-                            <h4 data-i18n="available_rewards">Available Rewards</h4>
-                            <div class="reward-item"><span>🎁 100 points</span><span data-i18n="reward_10off">10% Off Next Booking</span></div>
-                            <div class="reward-item"><span>🌟 250 points</span><span data-i18n="reward_free">Free Service (up to GHS 50)</span></div>
-                            <div class="reward-item"><span>👑 500 points</span><span data-i18n="reward_vip">VIP Status + 20% Off</span></div>
-                        </div>
-                    </div>
-                    <div class="profile-stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">📅</div>
-                            <div class="stat-info"><h3 id="totalBookingsCount">0</h3><p data-i18n="total_bookings">Total Bookings</p></div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">💰</div>
-                            <div class="stat-info"><h3 id="totalSpent">GHS 0</h3><p data-i18n="total_spent">Total Spent</p></div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">⭐</div>
-                            <div class="stat-info"><h3 id="favoriteService">-</h3><p data-i18n="favorite_service">Favorite Service</p></div>
-                        </div>
-                    </div>
-                    <div class="booking-history">
-                        <div class="history-header">
-                            <h3 data-i18n="booking_history">Booking History</h3>
-                            <div class="history-filters">
-                                <button class="filter-btn active" onclick="filterHistory('all')" data-i18n="all">All</button>
-                                <button class="filter-btn" onclick="filterHistory('upcoming')" data-i18n="upcoming">Upcoming</button>
-                                <button class="filter-btn" onclick="filterHistory('past')" data-i18n="past">Past</button>
-                            </div>
-                        </div>
-                        <div id="historyList" class="history-list"></div>
-                    </div>
+                </div>
+                <div id="historyList" class="history-list">
+                    <p class="no-data" data-i18n="no_bookings">No bookings yet</p>
                 </div>
             </div>
         </div>
     </section>
+
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Your Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="database-manager.js"></script>
     <script src="translations.js"></script>
     <script src="enhanced-script.js"></script>
 </body>
