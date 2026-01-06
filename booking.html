@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment - Ghana Salon Booking</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,6 +16,7 @@
             <nav>
                 <a href="index.html" data-i18n="nav_home">Home</a>
                 <a href="profile.html" data-i18n="nav_profile">My Profile</a>
+                <a href="admin.html" class="admin-link" data-i18n="nav_admin">Admin</a>
                 <select id="languageSelector" class="language-selector">
                     <option value="en">English</option>
                     <option value="tw">Twi</option>
@@ -27,195 +27,162 @@
         </div>
     </header>
 
-    <section class="booking-section">
+    <section class="business-header" id="businessHeader">
+        <!-- Business info will be loaded by JavaScript -->
+    </section>
+
+    <section class="gallery-section">
         <div class="container">
-            <div class="booking-container">
-                <div class="business-header" id="businessHeader">
-                    <!-- Business info will be loaded here -->
-                </div>
-
-                <!-- Image Gallery -->
-                <div class="gallery-section" id="gallerySection">
-                    <h3 data-i18n="our_work">Our Work</h3>
-                    <div class="gallery-grid" id="galleryGrid"></div>
-                </div>
-
-                <div class="booking-form-container">
-                    <h2 data-i18n="book_appointment">Book Your Appointment</h2>
-
-                    <form id="bookingForm" class="booking-form">
-                        <!-- Customer Info -->
-                        <div class="form-section">
-                            <h4 data-i18n="customer_info">Customer Information</h4>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="customerName" data-i18n="full_name">Full Name *</label>
-                                    <input type="text" id="customerName" required placeholder="Enter your full name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="customerPhone" data-i18n="phone">Phone Number *</label>
-                                    <input type="tel" id="customerPhone" required placeholder="0XX XXX XXXX">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="customerEmail" data-i18n="email">Email (Optional)</label>
-                                <input type="email" id="customerEmail" placeholder="your@email.com">
-                            </div>
-                        </div>
-
-                        <!-- Location Selection -->
-                        <div class="form-section">
-                            <h4 data-i18n="select_location">Select Location</h4>
-                            <div class="form-group">
-                                <label for="locationSelect" data-i18n="branch">Branch *</label>
-                                <select id="locationSelect" required>
-                                    <option value="">Choose location...</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="ghanaPostGPS" data-i18n="gps_address">GhanaPostGPS Address (Optional)</label>
-                                <input type="text" id="ghanaPostGPS" placeholder="GA-XXX-XXXX">
-                                <small class="help-text" data-i18n="gps_help">Your digital address for better directions</small>
-                            </div>
-                        </div>
-
-                        <!-- Service & Staff Selection -->
-                        <div class="form-section">
-                            <h4 data-i18n="select_service">Select Service & Stylist</h4>
-                            <div class="form-group">
-                                <label for="serviceSelect" data-i18n="service">Service *</label>
-                                <select id="serviceSelect" required>
-                                    <option value="">Choose a service...</option>
-                                </select>
-                            </div>
-
-                            <!-- Staff Selection -->
-                            <div class="form-group">
-                                <label data-i18n="choose_stylist">Choose Your Stylist *</label>
-                                <div class="staff-grid" id="staffGrid">
-                                    <!-- Staff cards loaded by JS -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Date & Time -->
-                        <div class="form-section">
-                            <h4 data-i18n="select_datetime">Select Date & Time</h4>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="appointmentDate" data-i18n="date">Date *</label>
-                                    <input type="date" id="appointmentDate" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="appointmentTime" data-i18n="time">Time *</label>
-                                    <select id="appointmentTime" required>
-                                        <option value="">Select time...</option>
-                                    </select>
-                                    <small class="dynamic-price-hint" data-i18n="offpeak_hint">⚡ Off-peak hours get 15% discount!</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Photo Upload -->
-                        <div class="form-section">
-                            <h4 data-i18n="upload_reference">Upload Reference Photo (Optional)</h4>
-                            <div class="form-group">
-                                <label for="referencePhoto" class="file-upload-label">
-                                    <span class="upload-icon">📸</span>
-                                    <span data-i18n="choose_photo">Choose Photo</span>
-                                    <input type="file" id="referencePhoto" accept="image/*" style="display: none;">
-                                </label>
-                                <div id="photoPreview" class="photo-preview"></div>
-                            </div>
-                        </div>
-
-                        <!-- Special Requests -->
-                        <div class="form-section">
-                            <div class="form-group">
-                                <label for="specialRequests" data-i18n="special_requests">Special Requests (Optional)</label>
-                                <textarea id="specialRequests" rows="3" placeholder="Any specific requests or preferences..."></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Price Summary -->
-                        <div class="price-summary">
-                            <div class="price-row">
-                                <span data-i18n="service_price">Service Price:</span>
-                                <span class="price" id="basePrice">GHS 0</span>
-                            </div>
-                            <div class="price-row discount-row" id="discountRow" style="display: none;">
-                                <span data-i18n="offpeak_discount">Off-Peak Discount (15%):</span>
-                                <span class="discount" id="discountAmount">- GHS 0</span>
-                            </div>
-                            <div class="price-row">
-                                <span data-i18n="deposit_required">Deposit Required:</span>
-                                <span id="depositAmount">GHS 20</span>
-                            </div>
-                            <div class="price-row total-row">
-                                <span data-i18n="total_price">Total Price:</span>
-                                <span class="price total" id="totalPrice">GHS 0</span>
-                            </div>
-                            <div class="price-row">
-                                <span data-i18n="duration">Duration:</span>
-                                <span id="serviceDuration">-</span>
-                            </div>
-                            <div class="loyalty-points">
-                                <span data-i18n="points_earn">You'll earn:</span>
-                                <span class="points" id="pointsEarned">0 points</span>
-                            </div>
-                        </div>
-
-                        <!-- Payment Method -->
-                        <div class="form-section">
-                            <h4 data-i18n="payment_method">Payment Method</h4>
-                            <div class="payment-options">
-                                <label class="payment-option">
-                                    <input type="radio" name="payment" value="momo" checked>
-                                    <span class="payment-card">
-                                        <span class="payment-icon">📱</span>
-                                        <span data-i18n="mobile_money">Mobile Money</span>
-                                        <small data-i18n="momo_networks">MTN, Vodafone, AirtelTigo</small>
-                                    </span>
-                                </label>
-                                <label class="payment-option">
-                                    <input type="radio" name="payment" value="card">
-                                    <span class="payment-card">
-                                        <span class="payment-icon">💳</span>
-                                        <span data-i18n="card">Card Payment</span>
-                                        <small data-i18n="card_types">Visa, Mastercard</small>
-                                    </span>
-                                </label>
-                                <label class="payment-option">
-                                    <input type="radio" name="payment" value="salon">
-                                    <span class="payment-card">
-                                        <span class="payment-icon">🏪</span>
-                                        <span data-i18n="pay_salon">Pay at Salon</span>
-                                        <small data-i18n="pay_salon_note">Full payment on arrival</small>
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-large" data-i18n="confirm_booking">Confirm Booking</button>
-                    </form>
-                </div>
-            </div>
+            <h3 data-i18n="our_work">Our Work</h3>
+            <div class="gallery-grid" id="galleryGrid"></div>
         </div>
     </section>
 
-    <!-- Success Modal -->
+    <section class="booking-form-section">
+        <div class="container">
+            <h2 data-i18n="book_appointment">Book Your Appointment</h2>
+
+            <form id="bookingForm" class="booking-form">
+                <div class="form-section">
+                    <h3 data-i18n="customer_info">Customer Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerName" data-i18n="full_name">Full Name *</label>
+                            <input type="text" id="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPhone" data-i18n="phone_number">Phone Number *</label>
+                            <input type="tel" id="customerPhone" placeholder="0241234567" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail" data-i18n="email">Email</label>
+                        <input type="email" id="customerEmail">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 data-i18n="appointment_details">Appointment Details</h3>
+                    <div class="form-group">
+                        <label for="locationSelect" data-i18n="location">Location</label>
+                        <select id="locationSelect" required>
+                            <option value="">Select location...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ghanaPostGPS">GhanaPost GPS (Optional)</label>
+                        <input type="text" id="ghanaPostGPS" placeholder="GA-123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceSelect" data-i18n="select_service">Select Service *</label>
+                        <select id="serviceSelect" required>
+                            <option value="">Choose a service...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 data-i18n="choose_staff">Choose Your Stylist</h3>
+                    <div class="staff-grid" id="staffGrid"></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appointmentDate" data-i18n="select_date">Select Date *</label>
+                            <input type="date" id="appointmentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentTime" data-i18n="select_time">Select Time *</label>
+                            <select id="appointmentTime" required>
+                                <option value="">Choose time...</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 data-i18n="reference_photo">Reference Photo (Optional)</h3>
+                    <input type="file" id="referencePhoto" accept="image/*">
+                    <div id="photoPreview"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3 data-i18n="special_requests">Special Requests</h3>
+                    <textarea id="specialRequests" rows="3" placeholder="Any special requirements or preferences..."></textarea>
+                </div>
+
+                <div class="form-section">
+                    <h3 data-i18n="price_summary">Price Summary</h3>
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span data-i18n="service_price">Service Price:</span>
+                            <span id="basePrice">GHS 0</span>
+                        </div>
+                        <div class="price-row">
+                            <span data-i18n="duration">Duration:</span>
+                            <span id="serviceDuration">-</span>
+                        </div>
+                        <div class="price-row" id="discountRow" style="display: none;">
+                            <span class="discount-text">⚡ Off-Peak Discount (15%):</span>
+                            <span id="discountAmount" class="discount-text">-GHS 0</span>
+                        </div>
+                        <div class="price-row total">
+                            <span data-i18n="total_price">Total Price:</span>
+                            <strong id="totalPrice">GHS 0</strong>
+                        </div>
+                        <div class="price-row">
+                            <span data-i18n="loyalty_points">Loyalty Points Earned:</span>
+                            <span id="pointsEarned" class="points-badge">0 points</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 data-i18n="payment_method">Payment Method</h3>
+                    <div class="payment-options">
+                        <label class="payment-card">
+                            <input type="radio" name="payment" value="Mobile Money" checked>
+                            <div class="payment-content">
+                                <span class="payment-icon">📱</span>
+                                <span data-i18n="mobile_money">Mobile Money</span>
+                            </div>
+                        </label>
+                        <label class="payment-card">
+                            <input type="radio" name="payment" value="Card">
+                            <div class="payment-content">
+                                <span class="payment-icon">💳</span>
+                                <span data-i18n="card">Card</span>
+                            </div>
+                        </label>
+                        <label class="payment-card">
+                            <input type="radio" name="payment" value="Pay at Salon">
+                            <div class="payment-content">
+                                <span class="payment-icon">💵</span>
+                                <span data-i18n="pay_salon">Pay at Salon</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large" data-i18n="confirm_booking">Confirm Booking</button>
+            </form>
+        </div>
+    </section>
+
     <div id="successModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content success-modal">
             <div class="success-icon">✅</div>
             <h2 data-i18n="booking_confirmed">Booking Confirmed!</h2>
-            <p data-i18n="booking_success_msg">Your appointment has been successfully booked.</p>
-            <div class="booking-details" id="bookingDetails"></div>
+            <div id="bookingDetails"></div>
             <div class="loyalty-badge">
-                <span data-i18n="points_added">Points Added:</span>
-                <strong id="pointsAdded">+0</strong>
+                <span data-i18n="points_earned">Points Earned:</span>
+                <strong id="pointsAdded">+0</strong> 🎉
             </div>
-            <button class="btn btn-primary" onclick="closeModal()" data-i18n="done">Done</button>
-            <button class="btn btn-secondary" onclick="location.href='index.html'" data-i18n="book_another">Book Another</button>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeModal()" data-i18n="done">Done</button>
+                <button class="btn btn-secondary" onclick="closeModal(); location.reload();" data-i18n="book_another">Book Another</button>
+            </div>
         </div>
     </div>
 
@@ -225,7 +192,14 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Your Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="database-manager.js"></script>
     <script src="translations.js"></script>
-    <script src="enhanced-script.js"></script>
+    <script src="enhanced-script-FIXED.js"></script>
 </body>
 </html>
