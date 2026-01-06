@@ -1,0 +1,42 @@
+{
+  "name": "Ghana Salon Booking",
+  "short_name": "GH Salon",
+  "description": "Book appointments at top salons and barbershops in Ghana",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FF6B35",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "business", "health"],
+  "shortcuts": [
+    {
+      "name": "Book Appointment",
+      "url": "/index.html",
+      "description": "Book a new appointment"
+    },
+    {
+      "name": "My Profile",
+      "url": "/profile.html",
+      "description": "View your booking history"
+    },
+    {
+      "name": "Admin Dashboard",
+      "url": "/admin.html",
+      "description": "Business owner dashboard"
+    }
+  ]
+}
