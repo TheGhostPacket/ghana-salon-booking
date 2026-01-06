@@ -1,4 +1,4 @@
-// Ghana Salon Booking System - Enhanced JavaScript v2.0
+// Ghana Salon Booking System - Enhanced JavaScript v2.1 (FIXED)
 // ========================================================
 
 // BUSINESS DATA
@@ -223,7 +223,10 @@ if (window.location.pathname.includes('index.html') || window.location.pathname 
     document.addEventListener('DOMContentLoaded', loadBusinessCards);
 }
 
-// BOOKING PAGE
+// BOOKING PAGE - DECLARE GLOBAL VARIABLES FIRST (FIX FOR THE ERROR)
+let selectedStaffId = null;
+let uploadedPhotoData = null;
+
 if (window.location.pathname.includes('booking.html')) {
     const selectedBusiness = sessionStorage.getItem('selectedBusiness');
     if (!selectedBusiness || !businesses[selectedBusiness]) {
@@ -233,8 +236,7 @@ if (window.location.pathname.includes('booking.html')) {
         initBookingPage(selectedBusiness);
     }
 }
-let selectedStaffId = null;
-let uploadedPhotoData = null;
+
 function initBookingPage(businessId) {
     const business = businesses[businessId];
     const header = document.getElementById('businessHeader');
@@ -273,11 +275,16 @@ function loadGallery(business) {
 function loadStaffCards(business) {
     const staffGrid = document.getElementById('staffGrid');
     if (!staffGrid) return;
-    staffGrid.innerHTML = business.staff.map(staff => `
-        <div class="staff-card ${selectedStaffId === staff.id ? 'selected' : ''}" onclick="selectStaff(${staff.id})">
+    // Build HTML manually to avoid template literal issues with selectedStaffId
+    let cardsHTML = '';
+    business.staff.forEach(staff => {
+        const isSelected = (selectedStaffId === staff.id) ? 'selected' : '';
+        cardsHTML += `<div class="staff-card ${isSelected}" onclick="selectStaff(${staff.id})">
             <div class="staff-avatar">${staff.image}</div>
             <div class="staff-info"><strong>${staff.name}</strong><small>${staff.specialty}</small><span class="staff-rating">⭐ ${staff.rating}</span></div>
-        </div>`).join('');
+        </div>`;
+    });
+    staffGrid.innerHTML = cardsHTML;
 }
 function selectStaff(staffId) {
     selectedStaffId = staffId;
@@ -595,4 +602,4 @@ function logout() {
     sessionStorage.removeItem('currentBusiness');
     window.location.reload();
 }
-console.log('🚀 Ghana Salon Booking System v2.0 Loaded - Phase 1 Complete!');
+console.log('🚀 Ghana Salon Booking System v2.1 Loaded - FIXED VERSION!');
