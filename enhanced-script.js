@@ -1,4 +1,5 @@
-// Ghana Salon Booking System - Enhanced JavaScript v2.1 (FIXED)
+// Ghana Salon Booking System - Complete v2.2
+// WITH Firebase Integration + Path Fix
 // ========================================================
 
 // BUSINESS DATA
@@ -95,62 +96,204 @@ const businesses = {
 
 const timeSlots = ["09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","01:00 PM","01:30 PM","02:00 PM","02:30 PM","03:00 PM","03:30 PM","04:00 PM","04:30 PM","05:00 PM","05:30 PM","06:00 PM"];
 const OFF_PEAK_DISCOUNT = 0.15;
-const DEPOSIT_AMOUNT = 20;
 
-// STORAGE FUNCTIONS
-function saveAppointment(businessId, appointment) {
-    const appointments = getAppointments(businessId);
+// Check if Firebase is available
+const useFirebase = (typeof firebase !== 'undefined' && typeof db !== 'undefined');
+
+console.log('🔥 Firebase available:', useFirebase);
+
+// STORAGE FUNCTIONS - WITH FIREBASE FALLBACK
+async function saveAppointment(businessId, appointment) {
+    if (useFirebase) {
+        try {
+            const appointmentData = {
+                ...appointment,
+                businessId: businessId,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                status: 'confirmed'
+            };
+            const docRef = await appointmentsRef.add(appointmentData);
+            console.log('✅ Appointment saved to Firebase:', docRef.id);
+            return docRef.id;
+        } catch (error) {
+            console.error('❌ Firebase error, falling back to localStorage:', error);
+        }
+    }
+
+    // Fallback to localStorage
+    const appointments = getAppointmentsLocal(businessId);
     appointments.push(appointment);
     localStorage.setItem(`appointments_${businessId}`, JSON.stringify(appointments));
+    console.log('✅ Appointment saved to localStorage');
 }
-function getAppointments(businessId) {
+
+function getAppointmentsLocal(businessId) {
     const data = localStorage.getItem(`appointments_${businessId}`);
     return data ? JSON.parse(data) : [];
 }
-function getAllAppointments() {
+
+async function getAppointments(businessId) {
+    if (useFirebase) {
+        try {
+            const snapshot = await appointmentsRef
+                .where('businessId', '==', businessId)
+                .orderBy('date', 'desc')
+                .get();
+            const appointments = [];
+            snapshot.forEach(doc => {
+                appointments.push({ id: doc.id, ...doc.data() });
+            });
+            return appointments;
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+    return getAppointmentsLocal(businessId);
+}
+
+async function getAllAppointments() {
+    if (useFirebase) {
+        try {
+            const snapshot = await appointmentsRef.orderBy('date', 'desc').limit(500).get();
+            const appointments = [];
+            snapshot.forEach(doc => {
+                appointments.push({ id: doc.id, ...doc.data() });
+            });
+            return appointments;
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+
     const allAppointments = [];
     Object.keys(businesses).forEach(businessId => {
-        const appts = getAppointments(businessId);
+        const appts = getAppointmentsLocal(businessId);
         allAppointments.push(...appts);
     });
     return allAppointments;
 }
-function getCustomerAppointments(phone) {
-    return getAllAppointments().filter(apt => apt.customerPhone === phone);
-}
-function deleteAppointment(businessId, appointmentId) {
-    const appointments = getAppointments(businessId).filter(apt => apt.id !== appointmentId);
-    localStorage.setItem(`appointments_${businessId}`, JSON.stringify(appointments));
-}
-function clearAllAppointments() {
-    if (confirm('Are you sure you want to delete ALL appointments? This cannot be undone.')) {
-        const currentBusiness = sessionStorage.getItem('currentBusiness');
-        if (currentBusiness) {
-            localStorage.removeItem(`appointments_${currentBusiness}`);
-            loadDashboard();
+
+async function getCustomerAppointments(phone) {
+    if (useFirebase) {
+        try {
+            const snapshot = await appointmentsRef
+                .where('customerPhone', '==', phone)
+                .orderBy('date', 'desc')
+                .get();
+            const appointments = [];
+            snapshot.forEach(doc => {
+                appointments.push({ id: doc.id, ...doc.data() });
+            });
+            return appointments;
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
         }
     }
+
+    const allAppts = await getAllAppointments();
+    return allAppts.filter(apt => apt.customerPhone === phone);
 }
-function getCustomerProfile(phone) {
+
+async function deleteAppointment(businessId, appointmentId) {
+    if (useFirebase) {
+        try {
+            await appointmentsRef.doc(appointmentId).delete();
+            console.log('✅ Deleted from Firebase');
+            return true;
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+
+    const appointments = getAppointmentsLocal(businessId).filter(apt => apt.id !== appointmentId);
+    localStorage.setItem(`appointments_${businessId}`, JSON.stringify(appointments));
+    return true;
+}
+
+async function clearAllAppointments(businessId) {
+    if (!confirm('⚠️ Delete ALL appointments? This cannot be undone!')) return false;
+
+    if (useFirebase) {
+        try {
+            const snapshot = await appointmentsRef.where('businessId', '==', businessId).get();
+            const batch = db.batch();
+            snapshot.forEach(doc => batch.delete(doc.ref));
+            await batch.commit();
+            console.log('✅ Cleared from Firebase');
+            return true;
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+
+    localStorage.removeItem(`appointments_${businessId}`);
+    return true;
+}
+
+// Customer profile functions
+async function getCustomerProfile(phone) {
+    if (useFirebase) {
+        try {
+            const doc = await customersRef.doc(phone).get();
+            if (doc.exists) {
+                return { id: doc.id, ...doc.data() };
+            } else {
+                const newProfile = {
+                    phone, name: '', email: '', points: 0, totalBookings: 0, totalSpent: 0,
+                    joinDate: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                await customersRef.doc(phone).set(newProfile);
+                return newProfile;
+            }
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+
     const data = localStorage.getItem(`customer_${phone}`);
     return data ? JSON.parse(data) : {phone,name:'',email:'',points:0,totalBookings:0,totalSpent:0,joinDate:new Date().toISOString()};
 }
-function updateCustomerProfile(phone, updates) {
-    const profile = getCustomerProfile(phone);
+
+async function updateCustomerProfile(phone, updates) {
+    if (useFirebase) {
+        try {
+            await customersRef.doc(phone).update(updates);
+            return await getCustomerProfile(phone);
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+
+    const profile = await getCustomerProfile(phone);
     const updated = {...profile, ...updates};
     localStorage.setItem(`customer_${phone}`, JSON.stringify(updated));
     return updated;
 }
-function addLoyaltyPoints(phone, points) {
-    const profile = getCustomerProfile(phone);
+
+async function addLoyaltyPoints(phone, points) {
+    if (useFirebase) {
+        try {
+            await customersRef.doc(phone).update({
+                points: firebase.firestore.FieldValue.increment(points)
+            });
+            const profile = await getCustomerProfile(phone);
+            return profile.points;
+        } catch (error) {
+            console.error('❌ Firebase error:', error);
+        }
+    }
+
+    const profile = await getCustomerProfile(phone);
     profile.points += points;
-    updateCustomerProfile(phone, profile);
+    await updateCustomerProfile(phone, profile);
     return profile.points;
 }
+
 function formatDate(dateString) {
     const date = new Date(dateString + 'T00:00:00');
     return date.toLocaleDateString('en-US', {weekday:'short',year:'numeric',month:'short',day:'numeric'});
 }
+
 function calculateDiscountedPrice(basePrice, isOffPeak) {
     if (isOffPeak) {
         const discount = basePrice * OFF_PEAK_DISCOUNT;
@@ -158,14 +301,16 @@ function calculateDiscountedPrice(basePrice, isOffPeak) {
     }
     return {finalPrice: basePrice, discount: 0, hasDiscount: false};
 }
+
 function isOffPeakTime(business, time) {
     return business.offPeakHours.includes(time);
 }
 
-// HOME PAGE
+// HOME PAGE - FIXED PATH DETECTION
 function loadBusinessCards() {
     const grid = document.getElementById('businessGrid');
     if (!grid) return;
+
     grid.innerHTML = '';
     Object.values(businesses).forEach(business => {
         const card = document.createElement('div');
@@ -182,7 +327,10 @@ function loadBusinessCards() {
             <button class="btn btn-primary" onclick="selectBusiness('${business.id}')"><span data-i18n="book_now">Book Appointment</span></button></div>`;
         grid.appendChild(card);
     });
+
+    console.log('✅ Loaded', Object.keys(businesses).length, 'business cards');
 }
+
 function filterByLocation(city) {
     const cards = document.querySelectorAll('.business-card');
     const buttons = document.querySelectorAll('.location-btn');
@@ -192,42 +340,32 @@ function filterByLocation(city) {
         card.style.display = (city === 'all' || card.getAttribute('data-city') === city) ? 'block' : 'none';
     });
 }
+
 function selectBusiness(businessId) {
     sessionStorage.setItem('selectedBusiness', businessId);
     window.location.href = 'booking.html';
 }
-function toggleChat() {
-    const chatWindow = document.getElementById('chatWindow');
-    if (chatWindow) chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
-}
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('installBanner').style.display = 'block';
-});
-function installPWA() {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') console.log('PWA installed');
-            deferredPrompt = null;
-            closeInstallBanner();
-        });
-    }
-}
-function closeInstallBanner() {
-    document.getElementById('installBanner').style.display = 'none';
-}
-if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+
+// FIXED: Load business cards on homepage - ANY path with index.html or root
+const currentPath = window.location.pathname;
+const isHomePage = currentPath.includes('index.html') || 
+                   currentPath === '/' || 
+                   currentPath.endsWith('/ghana-salon-booking/') ||
+                   currentPath.endsWith('/Appointment/') ||
+                   document.getElementById('businessGrid') !== null;
+
+if (isHomePage) {
+    console.log('🏠 Homepage detected, loading business cards...');
     document.addEventListener('DOMContentLoaded', loadBusinessCards);
 }
 
-// BOOKING PAGE - DECLARE GLOBAL VARIABLES FIRST (FIX FOR THE ERROR)
+// BOOKING PAGE - DECLARE GLOBAL VARIABLES FIRST
 let selectedStaffId = null;
 let uploadedPhotoData = null;
 
-if (window.location.pathname.includes('booking.html')) {
+const isBookingPage = currentPath.includes('booking.html') || document.getElementById('bookingForm') !== null;
+
+if (isBookingPage) {
     const selectedBusiness = sessionStorage.getItem('selectedBusiness');
     if (!selectedBusiness || !businesses[selectedBusiness]) {
         alert('Please select a business first');
@@ -240,42 +378,71 @@ if (window.location.pathname.includes('booking.html')) {
 function initBookingPage(businessId) {
     const business = businesses[businessId];
     const header = document.getElementById('businessHeader');
-    header.innerHTML = `<h2>${business.name}</h2><p>📍 ${business.location}</p><p><small>GhanaPostGPS: ${business.ghanaPostGPS}</small></p>`;
+    if (header) {
+        header.innerHTML = `<h2>${business.name}</h2><p>📍 ${business.location}</p><p><small>GhanaPostGPS: ${business.ghanaPostGPS}</small></p>`;
+    }
+
     loadGallery(business);
+
     const locationSelect = document.getElementById('locationSelect');
-    const option = document.createElement('option');
-    option.value = business.location;
-    option.textContent = business.location;
-    locationSelect.appendChild(option);
-    locationSelect.value = business.location;
-    const serviceSelect = document.getElementById('serviceSelect');
-    business.services.forEach(service => {
+    if (locationSelect) {
         const option = document.createElement('option');
-        option.value = service.id;
-        option.textContent = `${service.name} - GHS ${service.price} (${service.duration})`;
-        serviceSelect.appendChild(option);
-    });
+        option.value = business.location;
+        option.textContent = business.location;
+        locationSelect.appendChild(option);
+        locationSelect.value = business.location;
+    }
+
+    const serviceSelect = document.getElementById('serviceSelect');
+    if (serviceSelect) {
+        business.services.forEach(service => {
+            const option = document.createElement('option');
+            option.value = service.id;
+            option.textContent = `${service.name} - GHS ${service.price} (${service.duration})`;
+            serviceSelect.appendChild(option);
+        });
+    }
+
     loadStaffCards(business);
     loadTimeSlots(business);
+
     const dateInput = document.getElementById('appointmentDate');
-    dateInput.min = new Date().toISOString().split('T')[0];
-    serviceSelect.addEventListener('change', function() { updatePricing(business); });
-    document.getElementById('appointmentTime').addEventListener('change', function() { updatePricing(business); });
-    document.getElementById('referencePhoto').addEventListener('change', handlePhotoUpload);
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        handleBookingSubmit(business);
-    });
+    if (dateInput) {
+        dateInput.min = new Date().toISOString().split('T')[0];
+    }
+
+    if (serviceSelect) {
+        serviceSelect.addEventListener('change', () => updatePricing(business));
+    }
+
+    const timeSelect = document.getElementById('appointmentTime');
+    if (timeSelect) {
+        timeSelect.addEventListener('change', () => updatePricing(business));
+    }
+
+    const photoInput = document.getElementById('referencePhoto');
+    if (photoInput) {
+        photoInput.addEventListener('change', handlePhotoUpload);
+    }
+
+    const form = document.getElementById('bookingForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleBookingSubmit(business);
+        });
+    }
 }
+
 function loadGallery(business) {
     const galleryGrid = document.getElementById('galleryGrid');
     if (!galleryGrid) return;
     galleryGrid.innerHTML = business.gallery.map(item => `<div class="gallery-item">${item}</div>`).join('');
 }
+
 function loadStaffCards(business) {
     const staffGrid = document.getElementById('staffGrid');
     if (!staffGrid) return;
-    // Build HTML manually to avoid template literal issues with selectedStaffId
     let cardsHTML = '';
     business.staff.forEach(staff => {
         const isSelected = (selectedStaffId === staff.id) ? 'selected' : '';
@@ -286,14 +453,17 @@ function loadStaffCards(business) {
     });
     staffGrid.innerHTML = cardsHTML;
 }
+
 function selectStaff(staffId) {
     selectedStaffId = staffId;
     const cards = document.querySelectorAll('.staff-card');
     cards.forEach(card => card.classList.remove('selected'));
     event.target.closest('.staff-card').classList.add('selected');
 }
+
 function loadTimeSlots(business) {
     const timeSelect = document.getElementById('appointmentTime');
+    if (!timeSelect) return;
     timeSlots.forEach(time => {
         const option = document.createElement('option');
         option.value = time;
@@ -301,26 +471,39 @@ function loadTimeSlots(business) {
         timeSelect.appendChild(option);
     });
 }
+
 function updatePricing(business) {
-    const serviceId = parseInt(document.getElementById('serviceSelect').value);
-    const time = document.getElementById('appointmentTime').value;
+    const serviceSelect = document.getElementById('serviceSelect');
+    const timeSelect = document.getElementById('appointmentTime');
+    if (!serviceSelect || !timeSelect) return;
+
+    const serviceId = parseInt(serviceSelect.value);
+    const time = timeSelect.value;
     if (!serviceId) return;
+
     const service = business.services.find(s => s.id === serviceId);
     if (!service) return;
+
     const isOffPeak = isOffPeakTime(business, time);
     const pricing = calculateDiscountedPrice(service.price, isOffPeak);
+
     document.getElementById('basePrice').textContent = `GHS ${service.price}`;
     document.getElementById('serviceDuration').textContent = service.duration;
     document.getElementById('pointsEarned').textContent = `${service.points} points`;
+
     const discountRow = document.getElementById('discountRow');
-    if (pricing.hasDiscount) {
-        discountRow.style.display = 'flex';
-        document.getElementById('discountAmount').textContent = `- GHS ${pricing.discount.toFixed(2)}`;
-    } else {
-        discountRow.style.display = 'none';
+    if (discountRow) {
+        if (pricing.hasDiscount) {
+            discountRow.style.display = 'flex';
+            document.getElementById('discountAmount').textContent = `- GHS ${pricing.discount.toFixed(2)}`;
+        } else {
+            discountRow.style.display = 'none';
+        }
     }
+
     document.getElementById('totalPrice').textContent = `GHS ${pricing.finalPrice.toFixed(2)}`;
 }
+
 function handlePhotoUpload(e) {
     const file = e.target.files[0];
     if (file) {
@@ -333,13 +516,16 @@ function handlePhotoUpload(e) {
         reader.readAsDataURL(file);
     }
 }
+
 function removePhoto() {
     uploadedPhotoData = null;
     document.getElementById('photoPreview').innerHTML = '';
     document.getElementById('referencePhoto').value = '';
 }
-function handleBookingSubmit(business) {
+
+async function handleBookingSubmit(business) {
     if (!selectedStaffId) { alert('Please select a stylist'); return; }
+
     const serviceId = parseInt(document.getElementById('serviceSelect').value);
     const service = business.services.find(s => s.id === serviceId);
     const staff = business.staff.find(s => s.id === selectedStaffId);
@@ -347,6 +533,7 @@ function handleBookingSubmit(business) {
     const phone = document.getElementById('customerPhone').value;
     const isOffPeak = isOffPeakTime(business, time);
     const pricing = calculateDiscountedPrice(service.price, isOffPeak);
+
     const appointment = {
         id: Date.now(), businessId: business.id, businessName: business.name,
         customerName: document.getElementById('customerName').value, customerPhone: phone,
@@ -360,18 +547,25 @@ function handleBookingSubmit(business) {
         paymentMethod: document.querySelector('input[name="payment"]:checked').value,
         pointsEarned: service.points, createdAt: new Date().toISOString()
     };
-    saveAppointment(business.id, appointment);
-    const profile = getCustomerProfile(phone);
+
+    await saveAppointment(business.id, appointment);
+
+    const profile = await getCustomerProfile(phone);
     profile.name = appointment.customerName;
     profile.email = appointment.customerEmail;
     profile.totalBookings += 1;
     profile.totalSpent += pricing.finalPrice;
-    addLoyaltyPoints(phone, service.points);
+    await updateCustomerProfile(phone, profile);
+    await addLoyaltyPoints(phone, service.points);
+
     showSuccessModal(appointment, business, service.points);
 }
+
 function showSuccessModal(appointment, business, points) {
     const modal = document.getElementById('successModal');
     const details = document.getElementById('bookingDetails');
+    if (!modal || !details) return;
+
     details.innerHTML = `<p><strong>Business:</strong> ${business.name}</p><p><strong>Staff:</strong> ${appointment.staff}</p>
         <p><strong>Service:</strong> ${appointment.service}</p><p><strong>Date:</strong> ${formatDate(appointment.date)}</p>
         <p><strong>Time:</strong> ${appointment.time}</p><p><strong>Location:</strong> ${appointment.location}</p>
@@ -380,9 +574,14 @@ function showSuccessModal(appointment, business, points) {
     document.getElementById('pointsAdded').textContent = `+${points}`;
     modal.classList.add('active');
 }
+
 function closeModal() {
-    document.getElementById('successModal').classList.remove('active');
-    document.getElementById('bookingForm').reset();
+    const modal = document.getElementById('successModal');
+    if (modal) modal.classList.remove('active');
+
+    const form = document.getElementById('bookingForm');
+    if (form) form.reset();
+
     selectedStaffId = null;
     uploadedPhotoData = null;
     document.getElementById('photoPreview').innerHTML = '';
@@ -393,64 +592,84 @@ function closeModal() {
 }
 
 // PROFILE PAGE
-if (window.location.pathname.includes('profile.html')) {
-    document.getElementById('profileLoginForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        loginToProfile(document.getElementById('loginPhone').value);
-    });
+const isProfilePage = currentPath.includes('profile.html') || document.getElementById('profileLoginForm') !== null;
+
+if (isProfilePage) {
+    const loginForm = document.getElementById('profileLoginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await loginToProfile(document.getElementById('loginPhone').value);
+        });
+    }
+
     const loggedInPhone = sessionStorage.getItem('customerPhone');
     if (loggedInPhone) loginToProfile(loggedInPhone);
 }
-function loginToProfile(phone) {
+
+async function loginToProfile(phone) {
     sessionStorage.setItem('customerPhone', phone);
     document.getElementById('loginPrompt').style.display = 'none';
     document.getElementById('profileDashboard').style.display = 'block';
-    loadProfileDashboard(phone);
+    await loadProfileDashboard(phone);
 }
+
 function logoutProfile() {
     sessionStorage.removeItem('customerPhone');
     window.location.reload();
 }
-function loadProfileDashboard(phone) {
-    const profile = getCustomerProfile(phone);
-    const appointments = getCustomerAppointments(phone);
+
+async function loadProfileDashboard(phone) {
+    const profile = await getCustomerProfile(phone);
+    const appointments = await getCustomerAppointments(phone);
+
     const initials = profile.name ? profile.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'GH';
     document.getElementById('profileInitials').textContent = initials;
     document.getElementById('profileName').textContent = profile.name || 'Customer';
     document.getElementById('profilePhone').textContent = phone;
     document.getElementById('totalPoints').textContent = profile.points;
+
     let nextReward = 100;
     if (profile.points >= 500) nextReward = 1000;
     else if (profile.points >= 250) nextReward = 500;
     else if (profile.points >= 100) nextReward = 250;
+
     const pointsToReward = nextReward - profile.points;
     const progressPercent = (profile.points / nextReward) * 100;
     document.getElementById('pointsToReward').textContent = pointsToReward;
     document.getElementById('loyaltyProgress').style.width = `${Math.min(progressPercent, 100)}%`;
+
     document.getElementById('totalBookingsCount').textContent = appointments.length;
     document.getElementById('totalSpent').textContent = `GHS ${profile.totalSpent.toFixed(2)}`;
+
     const serviceCount = {};
     appointments.forEach(apt => {
         serviceCount[apt.service] = (serviceCount[apt.service] || 0) + 1;
     });
     const favoriteService = Object.keys(serviceCount).reduce((a, b) => serviceCount[a] > serviceCount[b] ? a : b, '-');
     document.getElementById('favoriteService').textContent = favoriteService;
+
     loadBookingHistory(appointments, 'all');
 }
-function filterHistory(filter) {
+
+async function filterHistory(filter) {
     const phone = sessionStorage.getItem('customerPhone');
-    const appointments = getCustomerAppointments(phone);
+    const appointments = await getCustomerAppointments(phone);
     loadBookingHistory(appointments, filter);
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
 }
+
 function loadBookingHistory(appointments, filter) {
     const today = new Date().toISOString().split('T')[0];
     let filtered = appointments;
     if (filter === 'upcoming') filtered = appointments.filter(apt => apt.date >= today);
     else if (filter === 'past') filtered = appointments.filter(apt => apt.date < today);
     filtered.sort((a, b) => b.date.localeCompare(a.date));
+
     const historyList = document.getElementById('historyList');
+    if (!historyList) return;
+
     if (filtered.length === 0) {
         historyList.innerHTML = '<p class="no-data">No bookings found</p>';
         return;
@@ -465,13 +684,16 @@ function loadBookingHistory(appointments, filter) {
             ${!isPast ? `<button class="btn btn-secondary btn-small" onclick="rebookAppointment('${apt.businessId}')">Rebook</button>` : ''}</div>`;
     }).join('');
 }
+
 function rebookAppointment(businessId) {
     sessionStorage.setItem('selectedBusiness', businessId);
     window.location.href = 'booking.html';
 }
 
 // ADMIN DASHBOARD
-if (window.location.pathname.includes('admin.html')) {
+const isAdminPage = currentPath.includes('admin.html') || document.getElementById('businessSelect') !== null;
+
+if (isAdminPage) {
     const businessSelect = document.getElementById('businessSelect');
     if (businessSelect) {
         Object.values(businesses).forEach(business => {
@@ -481,69 +703,95 @@ if (window.location.pathname.includes('admin.html')) {
             businessSelect.appendChild(option);
         });
     }
-    document.getElementById('loginForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const businessId = document.getElementById('businessSelect').value;
-        const password = document.getElementById('adminPassword').value;
-        if (password === 'admin123') {
-            sessionStorage.setItem('currentBusiness', businessId);
-            sessionStorage.setItem('adminLoggedIn', 'true');
-            showDashboard();
-        } else {
-            alert('Incorrect password. Demo password is: admin123');
-        }
-    });
+
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const businessId = document.getElementById('businessSelect').value;
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'admin123') {
+                sessionStorage.setItem('currentBusiness', businessId);
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showDashboard();
+            } else {
+                alert('Incorrect password. Demo password is: admin123');
+            }
+        });
+    }
+
     if (sessionStorage.getItem('adminLoggedIn') === 'true') showDashboard();
 }
+
 function showDashboard() {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('dashboardSection').style.display = 'block';
     loadDashboard();
 }
-function loadDashboard() {
+
+async function loadDashboard() {
     const businessId = sessionStorage.getItem('currentBusiness');
     if (!businessId) return;
+
     const business = businesses[businessId];
-    const appointments = getAppointments(businessId);
+    const appointments = await getAppointments(businessId);
+
     document.getElementById('businessName').textContent = business.name;
     document.getElementById('businessLocation').textContent = business.location;
+
     const today = new Date().toISOString().split('T')[0];
     const todayAppointments = appointments.filter(apt => apt.date === today);
     const upcomingAppointments = appointments.filter(apt => apt.date >= today);
-    const totalRevenue = appointments.reduce((sum, apt) => sum + apt.finalPrice, 0);
+    const totalRevenue = appointments.reduce((sum, apt) => sum + (apt.finalPrice || 0), 0);
+
     document.getElementById('totalBookings').textContent = appointments.length;
     document.getElementById('todayBookings').textContent = todayAppointments.length;
     document.getElementById('totalRevenue').textContent = `GHS ${totalRevenue.toFixed(2)}`;
     document.getElementById('upcomingCount').textContent = upcomingAppointments.length;
+
     loadAdvancedAnalytics(appointments, business);
     loadAppointmentsTable(appointments);
 }
+
 function loadAdvancedAnalytics(appointments, business) {
     if (appointments.length === 0) return;
+
     const serviceCount = {};
     appointments.forEach(apt => { serviceCount[apt.service] = (serviceCount[apt.service] || 0) + 1; });
+
     const popularServices = document.getElementById('popularServices');
-    popularServices.innerHTML = Object.entries(serviceCount).sort(([,a], [,b]) => b - a).slice(0, 5).map(([service, count]) =>
-        `<div class="chart-bar"><span class="bar-label">${service}</span><div class="bar-container">
-        <div class="bar-fill" style="width: ${(count / appointments.length) * 100}%"></div></div>
-        <span class="bar-value">${count}</span></div>`).join('');
+    if (popularServices) {
+        popularServices.innerHTML = Object.entries(serviceCount).sort(([,a], [,b]) => b - a).slice(0, 5).map(([service, count]) =>
+            `<div class="chart-bar"><span class="bar-label">${service}</span><div class="bar-container">
+            <div class="bar-fill" style="width: ${(count / appointments.length) * 100}%"></div></div>
+            <span class="bar-value">${count}</span></div>`).join('');
+    }
+
     const hourCount = {};
     appointments.forEach(apt => { hourCount[apt.time] = (hourCount[apt.time] || 0) + 1; });
+
     const peakHours = document.getElementById('peakHours');
-    peakHours.innerHTML = Object.entries(hourCount).sort(([,a], [,b]) => b - a).slice(0, 5).map(([time, count]) =>
-        `<div class="chart-bar"><span class="bar-label">${time}</span><div class="bar-container">
-        <div class="bar-fill" style="width: ${(count / appointments.length) * 100}%"></div></div>
-        <span class="bar-value">${count}</span></div>`).join('');
+    if (peakHours) {
+        peakHours.innerHTML = Object.entries(hourCount).sort(([,a], [,b]) => b - a).slice(0, 5).map(([time, count]) =>
+            `<div class="chart-bar"><span class="bar-label">${time}</span><div class="bar-container">
+            <div class="bar-fill" style="width: ${(count / appointments.length) * 100}%"></div></div>
+            <span class="bar-value">${count}</span></div>`).join('');
+    }
+
     const staffCount = {};
     const staffRevenue = {};
     appointments.forEach(apt => {
         staffCount[apt.staff] = (staffCount[apt.staff] || 0) + 1;
-        staffRevenue[apt.staff] = (staffRevenue[apt.staff] || 0) + apt.finalPrice;
+        staffRevenue[apt.staff] = (staffRevenue[apt.staff] || 0) + (apt.finalPrice || 0);
     });
+
     const staffPerformance = document.getElementById('staffPerformance');
-    staffPerformance.innerHTML = Object.entries(staffCount).sort(([,a], [,b]) => b - a).map(([staff, count]) =>
-        `<div class="staff-stat"><strong>${staff}</strong><span>${count} bookings</span>
-        <span class="revenue">GHS ${staffRevenue[staff].toFixed(2)}</span></div>`).join('');
+    if (staffPerformance) {
+        staffPerformance.innerHTML = Object.entries(staffCount).sort(([,a], [,b]) => b - a).map(([staff, count]) =>
+            `<div class="staff-stat"><strong>${staff}</strong><span>${count} bookings</span>
+            <span class="revenue">GHS ${staffRevenue[staff].toFixed(2)}</span></div>`).join('');
+    }
+
     const uniqueCustomers = new Set(appointments.map(apt => apt.customerPhone));
     const returningCustomers = appointments.filter(apt => {
         const customerAppointments = appointments.filter(a => a.customerPhone === apt.customerPhone);
@@ -552,12 +800,20 @@ function loadAdvancedAnalytics(appointments, business) {
     const returningCount = new Set(returningCustomers.map(apt => apt.customerPhone)).size;
     const newCount = uniqueCustomers.size - returningCount;
     const retentionRate = uniqueCustomers.size > 0 ? (returningCount / uniqueCustomers.size) * 100 : 0;
-    document.getElementById('newCustomers').textContent = newCount;
-    document.getElementById('returningCustomers').textContent = returningCount;
-    document.getElementById('retentionRate').textContent = `${retentionRate.toFixed(1)}%`;
+
+    const newCustomersEl = document.getElementById('newCustomers');
+    const returningCustomersEl = document.getElementById('returningCustomers');
+    const retentionRateEl = document.getElementById('retentionRate');
+
+    if (newCustomersEl) newCustomersEl.textContent = newCount;
+    if (returningCustomersEl) returningCustomersEl.textContent = returningCount;
+    if (retentionRateEl) retentionRateEl.textContent = `${retentionRate.toFixed(1)}%`;
 }
+
 function loadAppointmentsTable(appointments) {
     const tbody = document.getElementById('appointmentsTableBody');
+    if (!tbody) return;
+
     if (appointments.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9" class="no-data">No appointments yet</td></tr>';
         return;
@@ -572,34 +828,74 @@ function loadAppointmentsTable(appointments) {
         <td>${apt.paymentMethod}</td><td><button class="btn-delete" onclick="deleteAppointmentHandler('${apt.id}')">Delete</button></td>
         </tr>`).join('');
 }
+
 let appointmentToDelete = null;
 function deleteAppointmentHandler(appointmentId) {
     appointmentToDelete = appointmentId;
     document.getElementById('deleteModal').classList.add('active');
 }
-function confirmDelete() {
+
+async function confirmDelete() {
     if (appointmentToDelete) {
         const businessId = sessionStorage.getItem('currentBusiness');
-        deleteAppointment(businessId, parseInt(appointmentToDelete));
-        loadDashboard();
+        await deleteAppointment(businessId, appointmentToDelete);
+        await loadDashboard();
         closeDeleteModal();
     }
 }
+
 function closeDeleteModal() {
     document.getElementById('deleteModal').classList.remove('active');
     appointmentToDelete = null;
 }
-function filterAppointments(filter) {
+
+async function filterAppointments(filter) {
     const businessId = sessionStorage.getItem('currentBusiness');
-    let appointments = getAppointments(businessId);
+    let appointments = await getAppointments(businessId);
     const today = new Date().toISOString().split('T')[0];
     if (filter === 'today') appointments = appointments.filter(apt => apt.date === today);
     else if (filter === 'upcoming') appointments = appointments.filter(apt => apt.date >= today);
     loadAppointmentsTable(appointments);
 }
+
 function logout() {
     sessionStorage.removeItem('adminLoggedIn');
     sessionStorage.removeItem('currentBusiness');
     window.location.reload();
 }
-console.log('🚀 Ghana Salon Booking System v2.1 Loaded - FIXED VERSION!');
+
+// UTILITY FUNCTIONS
+function toggleChat() {
+    const chatWindow = document.getElementById('chatWindow');
+    if (chatWindow) chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
+}
+
+// PWA Functions
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const banner = document.getElementById('installBanner');
+    if (banner) banner.style.display = 'block';
+});
+
+function installPWA() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') console.log('PWA installed');
+            deferredPrompt = null;
+            closeInstallBanner();
+        });
+    }
+}
+
+function closeInstallBanner() {
+    const banner = document.getElementById('installBanner');
+    if (banner) banner.style.display = 'none';
+}
+
+console.log('🚀 Ghana Salon Booking System v2.2 Loaded - COMPLETE VERSION!');
+console.log('✅ Path detection: FIXED');
+console.log('✅ Firebase integration: Ready');
+console.log('✅ Fallback to localStorage: Active');
