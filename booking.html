@@ -5,20 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment - Ghana Salon Booking</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
+
+    <!-- Header -->
+    <header class="header modern-header">
         <div class="container">
             <div class="logo">
-                <h1>🪒 Ghana Salon Booking</h1>
+                <span class="logo-icon">🇬🇭</span>
+                <h1>Ghana Salon Booking</h1>
             </div>
-            <nav>
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="profile.html" data-i18n="nav_profile">My Profile</a>
-                <a href="admin.html" class="admin-link" data-i18n="nav_admin">Admin</a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-i18n="navhome">Home</a>
+                <a href="profile.html" class="nav-link" data-i18n="navprofile">My Profile</a>
+                <a href="admin.html" class="nav-link admin-link" data-i18n="navadmin">Admin</a>
                 <select id="languageSelector" class="language-selector">
-                    <option value="en">English</option>
+                    <option value="en">🇬🇧 English</option>
                     <option value="tw">Twi</option>
                     <option value="ga">Ga</option>
                     <option value="ee">Ewe</option>
@@ -27,179 +30,298 @@
         </div>
     </header>
 
-    <section class="business-header" id="businessHeader">
-        <!-- Business info will be loaded by JavaScript -->
+    <!-- Business Header -->
+    <section class="business-header modern-business-header" id="businessHeader">
+        <!-- Loaded by JavaScript -->
     </section>
 
-    <section class="gallery-section">
+    <!-- Gallery Section -->
+    <section class="gallery-section modern-gallery">
         <div class="container">
-            <h3 data-i18n="our_work">Our Work</h3>
-            <div class="gallery-grid" id="galleryGrid"></div>
+            <h3 data-i18n="ourwork">Our Work</h3>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Loaded by JavaScript -->
+            </div>
         </div>
     </section>
 
-    <section class="booking-form-section">
+    <!-- Booking Form Section -->
+    <section class="booking-form-section modern-booking-section">
         <div class="container">
-            <h2 data-i18n="book_appointment">Book Your Appointment</h2>
+            <div class="booking-wrapper">
 
-            <form id="bookingForm" class="booking-form">
-                <div class="form-section">
-                    <h3 data-i18n="customer_info">Customer Information</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="customerName" data-i18n="full_name">Full Name *</label>
-                            <input type="text" id="customerName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="customerPhone" data-i18n="phone_number">Phone Number *</label>
-                            <input type="tel" id="customerPhone" placeholder="0241234567" required>
-                        </div>
+                <!-- Progress Steps -->
+                <div class="booking-progress">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <span>Your Info</span>
                     </div>
-                    <div class="form-group">
-                        <label for="customerEmail" data-i18n="email">Email</label>
-                        <input type="email" id="customerEmail">
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <span>Service</span>
                     </div>
-                </div>
-
-                <div class="form-section">
-                    <h3 data-i18n="appointment_details">Appointment Details</h3>
-                    <div class="form-group">
-                        <label for="locationSelect" data-i18n="location">Location</label>
-                        <select id="locationSelect" required>
-                            <option value="">Select location...</option>
-                        </select>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <span>Date & Time</span>
                     </div>
-                    <div class="form-group">
-                        <label for="ghanaPostGPS">GhanaPost GPS (Optional)</label>
-                        <input type="text" id="ghanaPostGPS" placeholder="GA-123-4567">
-                    </div>
-                    <div class="form-group">
-                        <label for="serviceSelect" data-i18n="select_service">Select Service *</label>
-                        <select id="serviceSelect" required>
-                            <option value="">Choose a service...</option>
-                        </select>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-number">4</div>
+                        <span>Payment</span>
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h3 data-i18n="choose_staff">Choose Your Stylist</h3>
-                    <div class="staff-grid" id="staffGrid"></div>
-                </div>
+                <h2 data-i18n="bookappointment">Book Your Appointment</h2>
 
-                <div class="form-section">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="appointmentDate" data-i18n="select_date">Select Date *</label>
-                            <input type="date" id="appointmentDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="appointmentTime" data-i18n="select_time">Select Time *</label>
-                            <select id="appointmentTime" required>
-                                <option value="">Choose time...</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <form id="bookingForm" class="modern-booking-form">
 
-                <div class="form-section">
-                    <h3 data-i18n="reference_photo">Reference Photo (Optional)</h3>
-                    <input type="file" id="referencePhoto" accept="image/*">
-                    <div id="photoPreview"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3 data-i18n="special_requests">Special Requests</h3>
-                    <textarea id="specialRequests" rows="3" placeholder="Any special requirements or preferences..."></textarea>
-                </div>
-
-                <div class="form-section">
-                    <h3 data-i18n="price_summary">Price Summary</h3>
-                    <div class="price-summary">
-                        <div class="price-row">
-                            <span data-i18n="service_price">Service Price:</span>
-                            <span id="basePrice">GHS 0</span>
+                    <!-- Step 1: Customer Info -->
+                    <div class="form-section active" data-step="1">
+                        <div class="section-header">
+                            <h3 data-i18n="customerinfo">📋 Customer Information</h3>
                         </div>
-                        <div class="price-row">
-                            <span data-i18n="duration">Duration:</span>
-                            <span id="serviceDuration">-</span>
-                        </div>
-                        <div class="price-row" id="discountRow" style="display: none;">
-                            <span class="discount-text">⚡ Off-Peak Discount (15%):</span>
-                            <span id="discountAmount" class="discount-text">-GHS 0</span>
-                        </div>
-                        <div class="price-row total">
-                            <span data-i18n="total_price">Total Price:</span>
-                            <strong id="totalPrice">GHS 0</strong>
-                        </div>
-                        <div class="price-row">
-                            <span data-i18n="loyalty_points">Loyalty Points Earned:</span>
-                            <span id="pointsEarned" class="points-badge">0 points</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h3 data-i18n="payment_method">Payment Method</h3>
-                    <div class="payment-options">
-                        <label class="payment-card">
-                            <input type="radio" name="payment" value="Mobile Money" checked>
-                            <div class="payment-content">
-                                <span class="payment-icon">📱</span>
-                                <span data-i18n="mobile_money">Mobile Money</span>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customerName" data-i18n="fullname">Full Name</label>
+                                <input type="text" id="customerName" required class="modern-input" placeholder="e.g. Kwame Asante">
                             </div>
-                        </label>
-                        <label class="payment-card">
-                            <input type="radio" name="payment" value="Card">
-                            <div class="payment-content">
-                                <span class="payment-icon">💳</span>
-                                <span data-i18n="card">Card</span>
+                            <div class="form-group">
+                                <label for="customerPhone" data-i18n="phonenumber">Phone Number</label>
+                                <input type="tel" id="customerPhone" required class="modern-input" placeholder="0241234567">
                             </div>
-                        </label>
-                        <label class="payment-card">
-                            <input type="radio" name="payment" value="Pay at Salon">
-                            <div class="payment-content">
-                                <span class="payment-icon">💵</span>
-                                <span data-i18n="pay_salon">Pay at Salon</span>
+                            <div class="form-group full-width">
+                                <label for="customerEmail" data-i18n="email">Email (Optional)</label>
+                                <input type="email" id="customerEmail" class="modern-input" placeholder="you@example.com">
                             </div>
-                        </label>
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" class="btn btn-primary btn-large" data-i18n="confirm_booking">Confirm Booking</button>
-            </form>
+                    <!-- Step 2: Service Selection -->
+                    <div class="form-section" data-step="2">
+                        <div class="section-header">
+                            <h3 data-i18n="appointmentdetails">💇 Service Details</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="locationSelect" data-i18n="location">Location</label>
+                                <select id="locationSelect" required class="modern-select">
+                                    <option value="">Select location...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ghanaPostGPS">GhanaPost GPS (Optional)</label>
+                                <input type="text" id="ghanaPostGPS" class="modern-input" placeholder="GA-123-4567">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="serviceSelect" data-i18n="selectservice">Select Service</label>
+                                <select id="serviceSelect" required class="modern-select">
+                                    <option value="">Choose a service...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <h3 data-i18n="choosestaff">👤 Choose Your Stylist</h3>
+                        </div>
+                        <div class="staff-grid" id="staffGrid">
+                            <!-- Loaded by JavaScript -->
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="referencephoto">📸 Reference Photo (Optional)</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="referencePhoto" accept="image/*" class="file-input">
+                                <label for="referencePhoto" class="file-label">
+                                    <span class="upload-icon">📁</span>
+                                    <span>Upload Image</span>
+                                </label>
+                            </div>
+                            <div id="photoPreview" class="photo-preview"></div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="specialRequests" data-i18n="specialrequests">Special Requests</label>
+                            <textarea id="specialRequests" rows="3" class="modern-textarea" placeholder="Any special requirements..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Date & Time -->
+                    <div class="form-section" data-step="3">
+                        <div class="section-header">
+                            <h3 data-i18n="datetime">📅 Select Date & Time</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="appointmentDate" data-i18n="selectdate">Select Date</label>
+                                <input type="date" id="appointmentDate" required class="modern-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime" data-i18n="selecttime">Select Time</label>
+                                <select id="appointmentTime" required class="modern-select">
+                                    <option value="">Choose time...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Payment & Summary -->
+                    <div class="form-section" data-step="4">
+                        <div class="section-header">
+                            <h3 data-i18n="pricesummary">💰 Price Summary</h3>
+                        </div>
+                        <div class="price-summary-card">
+                            <div class="price-row">
+                                <span data-i18n="serviceprice">Service Price</span>
+                                <strong id="basePrice">GHS 0</strong>
+                            </div>
+                            <div class="price-row">
+                                <span data-i18n="duration">Duration</span>
+                                <span id="serviceDuration">-</span>
+                            </div>
+                            <div class="price-row discount-row" id="discountRow" style="display: none;">
+                                <span class="discount-text">🎉 Off-Peak Discount (15%)</span>
+                                <span id="discountAmount" class="discount-text">-GHS 0</span>
+                            </div>
+                            <div class="price-row total-row">
+                                <span data-i18n="totalprice">Total Price</span>
+                                <strong id="totalPrice" class="total-amount">GHS 0</strong>
+                            </div>
+                            <div class="price-row loyalty-row">
+                                <span data-i18n="loyaltypoints">🎁 Points You'll Earn</span>
+                                <span id="pointsEarned" class="points-badge">0 points</span>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <h3 data-i18n="paymentmethod">💳 Payment Method</h3>
+                        </div>
+                        <div class="payment-options">
+                            <label class="payment-card">
+                                <input type="radio" name="payment" value="Mobile Money" checked>
+                                <div class="payment-content">
+                                    <span class="payment-icon">📱</span>
+                                    <div>
+                                        <strong data-i18n="mobilemoney">Mobile Money</strong>
+                                        <small>MTN MoMo, Vodafone Cash</small>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="payment-card">
+                                <input type="radio" name="payment" value="Card">
+                                <div class="payment-content">
+                                    <span class="payment-icon">💳</span>
+                                    <div>
+                                        <strong data-i18n="card">Card Payment</strong>
+                                        <small>Visa, Mastercard</small>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="payment-card">
+                                <input type="radio" name="payment" value="Pay at Salon">
+                                <div class="payment-content">
+                                    <span class="payment-icon">💵</span>
+                                    <div>
+                                        <strong data-i18n="paysalon">Pay at Salon</strong>
+                                        <small>Cash at appointment</small>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">
+                            ← Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
+                            Next →
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-large" id="submitBtn" style="display: none;" data-i18n="confirmbooking">
+                            Confirm Booking ✓
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </section>
 
+    <!-- Success Modal -->
     <div id="successModal" class="modal">
         <div class="modal-content success-modal">
-            <div class="success-icon">✅</div>
-            <h2 data-i18n="booking_confirmed">Booking Confirmed!</h2>
-            <div id="bookingDetails"></div>
+            <div class="success-animation">
+                <div class="success-icon">✓</div>
+            </div>
+            <h2 data-i18n="bookingconfirmed">Booking Confirmed!</h2>
+            <p>Your appointment has been successfully booked.</p>
+            <div id="bookingDetails" class="booking-details-modal"></div>
             <div class="loyalty-badge">
-                <span data-i18n="points_earned">Points Earned:</span>
-                <strong id="pointsAdded">+0</strong> 🎉
+                <span data-i18n="pointsearned">Points Earned</span>
+                <strong id="pointsAdded">0</strong>
             </div>
             <div class="modal-actions">
                 <button class="btn btn-primary" onclick="closeModal()" data-i18n="done">Done</button>
-                <button class="btn btn-secondary" onclick="closeModal(); location.reload();" data-i18n="book_another">Book Another</button>
+                <button class="btn btn-secondary" onclick="closeModal(); location.reload();" data-i18n="bookanother">Book Another</button>
             </div>
         </div>
     </div>
 
-    <footer class="footer">
+    <!-- Footer -->
+    <footer class="footer modern-footer">
         <div class="container">
-            <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footer_rights">All rights reserved.</span></p>
+            <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footerrights">All rights reserved.</span></p>
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
+    <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- Your Scripts -->
     <script src="firebase-config.js"></script>
     <script src="database-manager.js"></script>
     <script src="translations.js"></script>
     <script src="enhanced-script.js"></script>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function changeStep(direction) {
+            const newStep = currentStep + direction;
+            if (newStep < 1 || newStep > totalSteps) return;
+
+            // Hide current step
+            document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.remove('active');
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+
+            // Show new step
+            currentStep = newStep;
+            document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+
+            // Update buttons
+            document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Photo preview
+        document.getElementById('referencePhoto')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreview').innerHTML = 
+                        `<img src="${e.target.result}" alt="Preview"><button type="button" onclick="this.parentElement.innerHTML=''" class="remove-photo">×</button>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 </html>
