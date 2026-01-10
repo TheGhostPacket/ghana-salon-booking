@@ -2143,3 +2143,62 @@ img {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gray-500);
 }
+
+/* ========================================
+   BOOKING HERO IMAGE FIX - ADD TO BOTTOM
+======================================== */
+
+.booking-hero {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), rgba(255, 210, 63, 0.08));
+    padding: var(--spacing-2xl) 0;
+}
+
+.booking-hero-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;  /* Text takes MORE space */
+    gap: var(--spacing-2xl);
+    align-items: center;
+}
+
+.business-info h1 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.business-info p {
+    color: var(--gray-600);
+}
+
+/* THIS IS THE KEY - MAKE IMAGE SMALL! */
+.booking-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.booking-image img {
+    max-width: 250px !important;      /* SMALLER! */
+    max-height: 180px !important;     /* LIMIT HEIGHT */
+    width: auto !important;
+    height: auto !important;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Responsive - hide on smaller screens */
+@media (max-width: 968px) {
+    .booking-hero-content {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-image img {
+        max-width: 200px !important;
+        max-height: 150px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .booking-image {
+        display: none;  /* Hide completely on mobile */
+    }
+}
