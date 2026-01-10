@@ -46,7 +46,9 @@
                     <p>Fill in your details and select your preferred service</p>
                 </div>
                 <div class="booking-image">
-                    <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400&h=300&fit=crop" alt="Salon services">
+                    <img src="https://images.pexels.com/photos/3992870/pexels-photo-3992870.jpeg?auto=compress&cs=tinysrgb&w=400&h=300" 
+                         alt="Salon services"
+                         onerror="this.src='https://via.placeholder.com/400x300/FF6B35/FFFFFF?text=Book+Now'">
                 </div>
             </div>
         </div>
@@ -178,13 +180,6 @@
                                 <span class="note-icon">⚡</span>
                                 <p><strong>Off-peak discount:</strong> Book between 10AM-2PM on weekdays for 15% off!</p>
                             </div>
-
-                            <div class="available-slots">
-                                <h4>Available Time Slots</h4>
-                                <div id="timeSlotGrid" class="time-slot-grid">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Step 4: Payment & Confirmation -->
@@ -299,10 +294,6 @@
                             <span>Duration</span>
                             <strong id="sidebarDuration">-</strong>
                         </div>
-                        <div class="price-row discount-row" id="discountRow" style="display: none;">
-                            <span>🎉 Off-Peak Discount (15%)</span>
-                            <strong id="sidebarDiscount">- GHS 0</strong>
-                        </div>
                         <div class="summary-divider"></div>
                         <div class="price-row total-row">
                             <span>Total</span>
@@ -311,13 +302,6 @@
                         <div class="points-info">
                             <span class="points-badge">🎁 You'll earn <strong id="sidebarPoints">0</strong> points</span>
                         </div>
-                    </div>
-
-                    <div class="sidebar-card">
-                        <h4>📞 Need Help?</h4>
-                        <p>Contact us if you have any questions</p>
-                        <a href="tel:+233XXXXXXXXX" class="btn btn-secondary btn-small btn-block">Call Us</a>
-                        <a href="https://wa.me/233XXXXXXXXX" class="btn btn-secondary btn-small btn-block">WhatsApp</a>
                     </div>
 
                     <div class="sidebar-card trust-card">
@@ -366,7 +350,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-bottom">
@@ -378,20 +361,16 @@
     <script src="script.js"></script>
     <script src="translations.js"></script>
     <script>
-        // Multi-step form functionality
         let currentStep = 1;
         const totalSteps = 4;
 
         function showStep(step) {
-            // Hide all sections
             document.querySelectorAll('.form-section').forEach(section => {
                 section.classList.remove('active');
             });
 
-            // Show current section
             document.querySelector(`[data-section="${step}"]`).classList.add('active');
 
-            // Update progress
             document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
                 if (index < step) {
                     stepEl.classList.add('active');
@@ -400,17 +379,13 @@
                 }
             });
 
-            // Update buttons
             document.getElementById('prevButton').style.display = step === 1 ? 'none' : 'inline-flex';
             document.getElementById('nextButton').style.display = step === totalSteps ? 'none' : 'inline-flex';
             document.getElementById('submitButton').style.display = step === totalSteps ? 'inline-flex' : 'none';
 
-            // Update summary on final step
             if (step === 4) {
                 updateSummary();
             }
-
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -441,7 +416,7 @@
             for (let input of inputs) {
                 if (!input.value.trim()) {
                     input.focus();
-                    alert(`Please fill in all required fields`);
+                    alert('Please fill in all required fields');
                     return false;
                 }
             }
@@ -460,7 +435,6 @@
             showStep(currentStep);
         });
 
-        // Reference photo preview
         document.getElementById('referencePhoto')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -478,7 +452,6 @@
             document.getElementById('photoPreview').style.display = 'none';
         }
 
-        // Initialize
         showStep(1);
     </script>
 </body>

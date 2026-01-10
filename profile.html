@@ -39,7 +39,9 @@
         <div class="container">
             <div class="login-card">
                 <div class="login-image">
-                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=500&fit=crop" alt="Profile login">
+                    <img src="https://images.pexels.com/photos/3992870/pexels-photo-3992870.jpeg?auto=compress&cs=tinysrgb&w=400&h=500" 
+                         alt="Profile login"
+                         onerror="this.src='https://via.placeholder.com/400x500/FF6B35/FFFFFF?text=My+Profile'">
                 </div>
                 <div class="login-form-container">
                     <div class="login-header">
@@ -190,7 +192,6 @@
                 </div>
 
                 <div class="history-list" id="bookingHistory">
-                    <!-- Will be populated by JavaScript -->
                     <div class="empty-state">
                         <div class="empty-icon">📭</div>
                         <h4>No bookings yet</h4>
@@ -214,7 +215,6 @@
     <script src="script.js"></script>
     <script src="translations.js"></script>
     <script>
-        // Profile functionality
         document.getElementById('profileLoginForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             const phone = document.getElementById('loginPhone').value;
@@ -232,7 +232,6 @@
         }
 
         function loadProfileData(phone) {
-            // Load bookings from all businesses
             const allBookings = [];
             ['barber', 'salon'].forEach(businessId => {
                 const appointments = getAppointments(businessId);
@@ -240,31 +239,25 @@
                 allBookings.push(...userBookings);
             });
 
-            // Calculate stats
             const totalSpent = allBookings.reduce((sum, booking) => sum + (booking.servicePrice || 0), 0);
             const totalPoints = Math.floor(totalSpent / 10);
 
-            // Update profile info
             document.getElementById('profilePhone').textContent = phone;
             const name = allBookings[0]?.customerName || 'Valued Customer';
             document.getElementById('profileName').textContent = name;
             document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
 
-            // Update stats
             document.getElementById('totalBookings').textContent = allBookings.length;
             document.getElementById('totalSpent').textContent = `GHS ${totalSpent}`;
             document.getElementById('totalPoints').textContent = totalPoints;
 
-            // Calculate points to next reward
             const nextReward = Math.ceil(totalPoints / 100) * 100;
             const pointsNeeded = nextReward - totalPoints;
             document.getElementById('pointsToReward').textContent = pointsNeeded;
 
-            // Update progress bar
             const progress = (totalPoints % 100);
             document.getElementById('progressFill').style.width = progress + '%';
 
-            // Find favorite service
             if (allBookings.length > 0) {
                 const serviceCount = {};
                 allBookings.forEach(booking => {
@@ -276,7 +269,6 @@
                 document.getElementById('favoriteService').textContent = favorite;
             }
 
-            // Load booking history
             displayBookingHistory(allBookings);
         }
 
@@ -295,7 +287,6 @@
                 return;
             }
 
-            // Sort by date (newest first)
             bookings.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             historyContainer.innerHTML = bookings.map(booking => `
@@ -354,7 +345,6 @@
             if (totalPoints >= points) {
                 if (confirm(`Redeem this reward for ${points} points?`)) {
                     alert('🎉 Reward redeemed successfully!');
-                    // Update points
                     const newPoints = totalPoints - points;
                     document.getElementById('totalPoints').textContent = newPoints;
                 }
@@ -383,13 +373,11 @@
             document.getElementById('loginPhone').value = '';
         }
 
-        // Check if user is already logged in
         const savedPhone = sessionStorage.getItem('userPhone');
         if (savedPhone) {
             showProfile(savedPhone);
         }
 
-        // Tab filtering
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
