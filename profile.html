@@ -5,79 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Ghana Salon Booking</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
+
+    <!-- Header -->
+    <header class="header modern-header">
         <div class="container">
             <div class="logo">
-                <h1>🪒 Ghana Salon Booking</h1>
+                <span class="logo-icon">🇬🇭</span>
+                <h1>Ghana Salon Booking</h1>
             </div>
-            <nav>
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="profile.html" class="active" data-i18n="nav_profile">My Profile</a>
-                <a href="admin.html" class="admin-link" data-i18n="nav_admin">Admin</a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-i18n="navhome">Home</a>
+                <a href="profile.html" class="nav-link active" data-i18n="navprofile">My Profile</a>
+                <a href="admin.html" class="nav-link admin-link" data-i18n="navadmin">Admin</a>
+                <select id="languageSelector" class="language-selector">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="tw">Twi</option>
+                    <option value="ga">Ga</option>
+                    <option value="ee">Ewe</option>
+                </select>
             </nav>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
-    <section class="profile-section" id="loginPrompt">
+    <!-- Login Prompt Section -->
+    <section class="profile-section modern-profile-section" id="loginPrompt">
         <div class="container">
-            <div class="login-card">
-                <h2 data-i18n="profile_login">Login to Your Profile</h2>
-                <p data-i18n="profile_login_desc">Enter your phone number to view your bookings and loyalty points</p>
-                <form id="profileLoginForm">
+            <div class="login-card modern-login-card">
+                <div class="login-header">
+                    <div class="login-icon">👤</div>
+                    <h2 data-i18n="profilelogin">Access Your Profile</h2>
+                    <p data-i18n="profilelogindesc">Enter your phone number to view bookings and rewards</p>
+                </div>
+                <form id="profileLoginForm" class="modern-form">
                     <div class="form-group">
-                        <label for="loginPhone" data-i18n="phone_number">Phone Number</label>
-                        <input type="tel" id="loginPhone" placeholder="0241234567" required>
+                        <label for="loginPhone" data-i18n="phonenumber">Phone Number</label>
+                        <input type="tel" id="loginPhone" required class="modern-input" placeholder="0241234567">
                     </div>
-                    <button type="submit" class="btn btn-primary" data-i18n="login">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block" data-i18n="login">
+                        <span>Login</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                 </form>
+                <div class="login-footer">
+                    <p>New here? <a href="booking.html">Make your first booking</a></p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="profile-section" id="profileDashboard" style="display: none;">
+    <!-- Profile Dashboard Section -->
+    <section class="profile-section modern-profile-section" id="profileDashboard" style="display: none;">
         <div class="container">
-            <div class="profile-header">
-                <div class="profile-avatar" id="profileInitials">GH</div>
-                <div class="profile-info">
-                    <h2 id="profileName">Customer</h2>
-                    <p id="profilePhone"></p>
-                    <button onclick="logoutProfile()" class="btn btn-secondary btn-small" data-i18n="logout">Logout</button>
+
+            <!-- Profile Header -->
+            <div class="profile-header modern-profile-header">
+                <div class="profile-info-section">
+                    <div class="profile-avatar" id="profileInitials">GH</div>
+                    <div class="profile-details">
+                        <h2 id="profileName">Customer</h2>
+                        <p id="profilePhone" class="profile-phone"></p>
+                        <span class="profile-badge">⭐ Gold Member</span>
+                    </div>
+                </div>
+                <button onclick="logoutProfile()" class="btn btn-secondary btn-small" data-i18n="logout">Logout</button>
+            </div>
+
+            <!-- Loyalty Card -->
+            <div class="loyalty-card modern-loyalty-card">
+                <div class="loyalty-header">
+                    <h3 data-i18n="loyaltypoints">🎁 Loyalty Rewards</h3>
+                    <div class="points-display">
+                        <span class="points-number" id="totalPoints">0</span>
+                        <span class="points-label" data-i18n="points">points</span>
+                    </div>
+                </div>
+                <div class="loyalty-progress-bar">
+                    <div class="progress-fill" id="loyaltyProgress" style="width: 0%"></div>
+                </div>
+                <p class="loyalty-text">
+                    <strong><span id="pointsToReward">100</span></strong> <span data-i18n="pointstoreward">points to next reward</span> 🎉
+                </p>
+                <div class="rewards-tiers">
+                    <div class="tier bronze">
+                        <span class="tier-icon">🥉</span>
+                        <span>Bronze</span>
+                        <small>0-99 pts</small>
+                    </div>
+                    <div class="tier silver">
+                        <span class="tier-icon">🥈</span>
+                        <span>Silver</span>
+                        <small>100-299 pts</small>
+                    </div>
+                    <div class="tier gold">
+                        <span class="tier-icon">🥇</span>
+                        <span>Gold</span>
+                        <small>300+ pts</small>
+                    </div>
                 </div>
             </div>
 
-            <div class="loyalty-card">
-                <h3 data-i18n="loyalty_points">Loyalty Points</h3>
-                <div class="points-display">
-                    <span class="points-number" id="totalPoints">0</span>
-                    <span data-i18n="points">points</span>
+            <!-- Stats Grid -->
+            <div class="profile-stats-grid">
+                <div class="profile-stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-content">
+                        <h4 data-i18n="totalbookings">Total Bookings</h4>
+                        <p class="stat-value" id="totalBookingsCount">0</p>
+                    </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="loyaltyProgress"></div>
+                <div class="profile-stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <h4 data-i18n="totalspent">Total Spent</h4>
+                        <p class="stat-value" id="totalSpent">GHS 0</p>
+                    </div>
                 </div>
-                <p><span id="pointsToReward">100</span> <span data-i18n="points_to_reward">points to next reward</span></p>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h4 data-i18n="total_bookings">Total Bookings</h4>
-                    <p class="stat-number" id="totalBookingsCount">0</p>
-                </div>
-                <div class="stat-card">
-                    <h4 data-i18n="total_spent">Total Spent</h4>
-                    <p class="stat-number" id="totalSpent">GHS 0</p>
-                </div>
-                <div class="stat-card">
-                    <h4 data-i18n="favorite_service">Favorite Service</h4>
-                    <p class="stat-text" id="favoriteService">-</p>
+                <div class="profile-stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-content">
+                        <h4 data-i18n="favoriteservice">Favorite Service</h4>
+                        <p class="stat-value" id="favoriteService">-</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="booking-history">
-                <div class="section-header">
-                    <h3 data-i18n="booking_history">Booking History</h3>
+            <!-- Booking History -->
+            <div class="booking-history-section">
+                <div class="section-header-inline">
+                    <h3 data-i18n="bookinghistory">📋 Booking History</h3>
                     <div class="filter-buttons">
                         <button class="filter-btn active" onclick="filterHistory('all')" data-i18n="all">All</button>
                         <button class="filter-btn" onclick="filterHistory('upcoming')" data-i18n="upcoming">Upcoming</button>
@@ -85,26 +150,90 @@
                     </div>
                 </div>
                 <div id="historyList" class="history-list">
-                    <p class="no-data" data-i18n="no_bookings">No bookings yet</p>
+                    <div class="empty-state">
+                        <span class="empty-icon">📅</span>
+                        <p data-i18n="nobookings">No bookings yet</p>
+                        <a href="booking.html" class="btn btn-primary">Make a Booking</a>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <footer class="footer">
+    <!-- Footer -->
+    <footer class="footer modern-footer">
         <div class="container">
-            <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footer_rights">All rights reserved.</span></p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>🇬🇭 Ghana Salon Booking</h3>
+                    <p>Connecting Ghana's best stylists with clients nationwide.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <a href="index.html">Home</a>
+                        <a href="profile.html">My Profile</a>
+                        <a href="booking.html">Book Now</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Contact Us</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footerrights">All rights reserved.</span></p>
+                <p class="made-in-ghana">Made with ❤️ in Ghana</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
+    <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- Your Scripts -->
     <script src="firebase-config.js"></script>
     <script src="database-manager.js"></script>
     <script src="translations.js"></script>
     <script src="enhanced-script.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        }
+
+        // Update loyalty progress visualization
+        function updateLoyaltyProgress(points) {
+            const tier1 = 100;
+            const tier2 = 300;
+            let percentage = 0;
+
+            if (points < tier1) {
+                percentage = (points / tier1) * 33.33;
+            } else if (points < tier2) {
+                percentage = 33.33 + ((points - tier1) / (tier2 - tier1)) * 33.33;
+            } else {
+                percentage = 100;
+            }
+
+            document.getElementById('loyaltyProgress').style.width = percentage + '%';
+
+            // Update tier badges
+            document.querySelectorAll('.tier').forEach(tier => {
+                tier.classList.remove('active');
+            });
+
+            if (points >= tier2) {
+                document.querySelector('.tier.gold').classList.add('active');
+            } else if (points >= tier1) {
+                document.querySelector('.tier.silver').classList.add('active');
+            } else {
+                document.querySelector('.tier.bronze').classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
