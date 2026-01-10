@@ -3,32 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghana Salon Booking - Professional Hair & Beauty Services</title>
-    <meta name="description" content="Book appointments with top barbers and hairstylists across Ghana">
+    <title>Ghana Salon Booking - Premium Hair & Beauty Services Across Ghana</title>
+    <meta name="description" content="Book top barbers, hairstylists & beauty experts in Accra, Kumasi & beyond. Real-time slots, Mobile Money payments, loyalty rewards. Proudly Ghanaian!">
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FF6B35">
 </head>
 <body>
+    <!-- Install Banner -->
     <div id="installBanner" class="install-banner" style="display: none;">
         <div class="install-content">
-            <h4>📱 Install Ghana Salon Booking</h4>
+            <h4>Install Ghana Salon Booking</h4>
             <p>Quick access from your home screen</p>
             <button onclick="installPWA()" class="btn btn-primary btn-small">Install Now</button>
-            <button onclick="closeInstallBanner()" class="btn-close">✕</button>
+            <button onclick="closeInstallBanner()" class="btn-close">&times;</button>
         </div>
     </div>
 
-    <header class="header">
+    <!-- Header -->
+    <header class="header modern-header">
         <div class="container">
             <div class="logo">
-                <h1>🪒 Ghana Salon Booking</h1>
+                <h1>
+                    <span class="ghana-flag">🇬🇭</span>
+                    Ghana Salon Booking
+                </h1>
             </div>
             <nav>
-                <a href="index.html" class="active" data-i18n="nav_home">Home</a>
-                <a href="profile.html" data-i18n="nav_profile">My Profile</a>
-                <a href="admin.html" class="admin-link" data-i18n="nav_admin">Admin Login</a>
+                <a href="index.html" class="active" data-i18n="navhome">Home</a>
+                <a href="profile.html" data-i18n="navprofile">My Profile</a>
+                <a href="admin.html" class="admin-link" data-i18n="navadmin">Admin Login</a>
                 <select id="languageSelector" class="language-selector">
                     <option value="en">English</option>
                     <option value="tw">Twi</option>
@@ -39,90 +44,100 @@
         </div>
     </header>
 
-    <section class="hero">
+    <!-- Hero Section with Ghana Background -->
+    <section class="hero modern-hero">
+        <div class="hero-bg-overlay"></div>
         <div class="container">
-            <h2 data-i18n="hero_title">Book Your Perfect Look</h2>
-            <p data-i18n="hero_subtitle">Professional barbers and hairstylists across Ghana at your service</p>
-            <a href="#businesses" class="btn btn-primary btn-large" data-i18n="browse_salons">Browse Salons</a>
+            <div class="hero-content">
+                <h2 data-i18n="herotitle">Discover Your Perfect Ghanaian Glow ✨</h2>
+                <p data-i18n="herosubtitle">Professional stylists across Accra, Kumasi, Takoradi & more. Kente vibes, real-time bookings, Mobile Money ready.</p>
+                <div class="hero-buttons">
+                    <a href="#businesses" class="btn btn-primary btn-large hero-btn" data-i18n="browsesalons">Browse Salons</a>
+                    <a href="booking.html" class="btn btn-secondary btn-large hero-btn" data-i18n="booknow">Book Now</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- Ghana cultural image: Vibrant market scene with traditional patterns -->
+                <img src="https://images.unsplash.com/photo-1578631618386-67b3aea6099f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Ghanaian stylist in vibrant cultural setting" loading="eager">
+            </div>
         </div>
     </section>
 
-    <section class="features">
+    <!-- Features Section -->
+    <section class="features modern-features">
         <div class="container">
-            <h3 data-i18n="why_choose">Why Choose Ghana Salon Booking?</h3>
+            <h3 data-i18n="whychoose">Why Ghana Salon Booking?</h3>
             <div class="features-grid">
-                <div class="feature-card">
-                    <span class="feature-icon">📱</span>
-                    <h4 data-i18n="feature_pwa">PWA Enabled</h4>
-                    <p data-i18n="feature_pwa_desc">Quick access from your home screen</p>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ghana-icon">📱</div>
+                    <h4 data-i18n="featurepwa">PWA Powered</h4>
+                    <p data-i18n="featurepwadesc">Install on home screen, works offline – pure Ghanaian convenience anywhere.</p>
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Accra street vibrancy" class="feature-bg-img">
                 </div>
-                <div class="feature-card">
-                    <span class="feature-icon">⏰</span>
-                    <h4 data-i18n="feature_realtime">Real-Time Booking</h4>
-                    <p data-i18n="feature_realtime_desc">Instant confirmation with available time slots</p>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ghana-icon">⚡</div>
+                    <h4 data-i18n="featurerealtime">Instant Booking</h4>
+                    <p data-i18n="featurerealtimedesc">Real-time slots, no waiting. Book your fade or braids in seconds.</p>
                 </div>
-                <div class="feature-card">
-                    <span class="feature-icon">💳</span>
-                    <h4 data-i18n="feature_payment">Secure Payment</h4>
-                    <p data-i18n="feature_payment_desc">Mobile Money, Card, or Pay at salon</p>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ghana-icon">💳</div>
+                    <h4 data-i18n="featurepayment">Secure Payments</h4>
+                    <p data-i18n="featurepaymentdesc">Mobile Money (MTN MoMo, Vodafone Cash), cards or pay later.</p>
                 </div>
-                <div class="feature-card">
-                    <span class="feature-icon">⭐</span>
-                    <h4 data-i18n="feature_loyalty">Loyalty Rewards</h4>
-                    <p data-i18n="feature_loyalty_desc">Earn points with every booking</p>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ghana-icon">⭐</div>
+                    <h4 data-i18n="featureloyalty">Loyalty Rewards</h4>
+                    <p data-i18n="featureloyaltydesc">Earn points per cedi spent – redeem for free services!</p>
+                    <img src="https://images.unsplash.com/photo-1558618047-3c8c76fdd7e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ghanaian fabric patterns" class="feature-bg-img">
                 </div>
-                <div class="feature-card">
-                    <span class="feature-icon">👥</span>
-                    <h4 data-i18n="feature_choose">Choose Your Stylist</h4>
-                    <p data-i18n="feature_choose_desc">Book with your favorite professional</p>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ghana-icon">👑</div>
+                    <h4 data-i18n="featurechoose">Your Stylist</h4>
+                    <p data-i18n="featurechoosedesc">Choose favorites by name, see reviews & portfolios.</p>
                 </div>
-                <div class="feature-card">
-                    <span class="feature-icon">💬</span>
-                    <h4 data-i18n="feature_support">24/7 Support</h4>
-                    <p data-i18n="feature_support_desc">Connect your preferred chat service (Tawk.to, Crisp, WhatsApp)</p>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ghana-icon">🆘</div>
+                    <h4 data-i18n="featuresupport">24/7 Support</h4>
+                    <p data-i18n="featuresupportdesc">WhatsApp, chat or call – we're here like family.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="businesses" id="businesses">
+    <!-- Businesses Section -->
+    <section class="businesses modern-businesses" id="businesses">
         <div class="container">
-            <h3 data-i18n="choose_salon">Choose Your Salon</h3>
-
+            <h3 data-i18n="choosesalon">Top Salons in Your City</h3>
             <div class="location-filters">
-                <h4 data-i18n="select_city">Select Your City</h4>
+                <h4 data-i18n="selectcity">Select City</h4>
                 <div class="filter-buttons">
-                    <button class="location-btn active" onclick="filterByLocation('all')" data-i18n="all_cities">All Cities</button>
-                    <button class="location-btn" onclick="filterByLocation('accra')" data-i18n="city_accra">Accra</button>
-                    <button class="location-btn" onclick="filterByLocation('kumasi')" data-i18n="city_kumasi">Kumasi</button>
-                    <button class="location-btn" onclick="filterByLocation('takoradi')" data-i18n="city_takoradi">Takoradi</button>
+                    <button class="location-btn active" onclick="filterByLocation('all')" data-i18n="allcities">All Cities</button>
+                    <button class="location-btn" onclick="filterByLocation('accra')" data-i18n="cityaccra">Accra</button>
+                    <button class="location-btn" onclick="filterByLocation('kumasi')" data-i18n="citykumasi">Kumasi</button>
+                    <button class="location-btn" onclick="filterByLocation('takoradi')" data-i18n="citytakoradi">Takoradi</button>
                 </div>
             </div>
-
             <div class="business-grid" id="businessGrid">
-                <!-- Business cards will be loaded here by JavaScript -->
+                <!-- Dynamic business cards loaded by JS -->
             </div>
         </div>
     </section>
 
-    <footer class="footer">
+    <!-- Footer -->
+    <footer class="footer modern-footer">
         <div class="container">
-            <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footer_rights">All rights reserved.</span></p>
-            <p><small>Made with ❤️ for Ghana 🇬🇭</small></p>
+            <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footerrights">All rights reserved.</span></p>
+            <p class="small">Made with ❤️ for Ghana 🇬🇭</p>
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
+    <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- Your Scripts -->
     <script src="firebase-config.js"></script>
     <script src="database-manager.js"></script>
     <script src="translations.js"></script>
     <script src="enhanced-script.js"></script>
-
-    <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
