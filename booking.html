@@ -3,248 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment - Ghana Salon Booking</title>
+    <title>Book Your Appointment - Ghana Salon</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#FF6B35">
 </head>
 <body>
-
     <!-- Header -->
     <header class="header modern-header">
         <div class="container">
             <div class="logo">
-                <span class="logo-icon">🇬🇭</span>
-                <h1>Ghana Salon Booking</h1>
+                <span class="logo-icon">✂️</span>
+                <h1>Ghana Salon</h1>
             </div>
             <nav class="nav-menu">
-                <a href="index.html" class="nav-link" data-i18n="navhome">Home</a>
-                <a href="profile.html" class="nav-link" data-i18n="navprofile">My Profile</a>
-                <a href="admin.html" class="nav-link admin-link" data-i18n="navadmin">Admin</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="booking.html" class="nav-link active">Book Now</a>
+                <a href="profile.html" class="nav-link">My Profile</a>
+                <a href="admin.html" class="nav-link">Admin</a>
                 <select id="languageSelector" class="language-selector">
                     <option value="en">🇬🇧 English</option>
-                    <option value="tw">Twi</option>
-                    <option value="ga">Ga</option>
-                    <option value="ee">Ewe</option>
+                    <option value="tw">🇬🇭 Twi</option>
+                    <option value="ga">🇬🇭 Ga</option>
+                    <option value="ee">🇬🇭 Ewe</option>
                 </select>
             </nav>
+            <button class="mobile-menu-toggle">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </header>
 
-    <!-- Business Header -->
-    <section class="business-header modern-business-header" id="businessHeader">
-        <!-- Loaded by JavaScript -->
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery-section modern-gallery">
+    <!-- Booking Hero Section -->
+    <section class="booking-hero">
         <div class="container">
-            <h3 data-i18n="ourwork">Our Work</h3>
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- Loaded by JavaScript -->
+            <div class="back-button">
+                <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+            </div>
+            <div class="booking-hero-content">
+                <div id="businessHeader" class="business-info">
+                    <h1>Book Your Appointment</h1>
+                    <p>Fill in your details and select your preferred service</p>
+                </div>
+                <div class="booking-image">
+                    <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400&h=300&fit=crop" alt="Salon services">
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Booking Form Section -->
-    <section class="booking-form-section modern-booking-section">
+    <section class="booking-section">
         <div class="container">
-            <div class="booking-wrapper">
-
-                <!-- Progress Steps -->
-                <div class="booking-progress">
-                    <div class="progress-step active" data-step="1">
-                        <div class="step-number">1</div>
-                        <span>Your Info</span>
-                    </div>
-                    <div class="progress-line"></div>
-                    <div class="progress-step" data-step="2">
-                        <div class="step-number">2</div>
-                        <span>Service</span>
-                    </div>
-                    <div class="progress-line"></div>
-                    <div class="progress-step" data-step="3">
-                        <div class="step-number">3</div>
-                        <span>Date & Time</span>
-                    </div>
-                    <div class="progress-line"></div>
-                    <div class="progress-step" data-step="4">
-                        <div class="step-number">4</div>
-                        <span>Payment</span>
-                    </div>
-                </div>
-
-                <h2 data-i18n="bookappointment">Book Your Appointment</h2>
-
-                <form id="bookingForm" class="modern-booking-form">
-
-                    <!-- Step 1: Customer Info -->
-                    <div class="form-section active" data-step="1">
-                        <div class="section-header">
-                            <h3 data-i18n="customerinfo">📋 Customer Information</h3>
+            <div class="booking-layout">
+                <!-- Main Booking Form -->
+                <div class="booking-form-container">
+                    <!-- Progress Steps -->
+                    <div class="booking-progress">
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-circle">1</div>
+                            <span>Your Info</span>
                         </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="customerName" data-i18n="fullname">Full Name</label>
-                                <input type="text" id="customerName" required class="modern-input" placeholder="e.g. Kwame Asante">
-                            </div>
-                            <div class="form-group">
-                                <label for="customerPhone" data-i18n="phonenumber">Phone Number</label>
-                                <input type="tel" id="customerPhone" required class="modern-input" placeholder="0241234567">
-                            </div>
-                            <div class="form-group full-width">
-                                <label for="customerEmail" data-i18n="email">Email (Optional)</label>
-                                <input type="email" id="customerEmail" class="modern-input" placeholder="you@example.com">
-                            </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="2">
+                            <div class="step-circle">2</div>
+                            <span>Service</span>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="3">
+                            <div class="step-circle">3</div>
+                            <span>Date & Time</span>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="4">
+                            <div class="step-circle">4</div>
+                            <span>Confirm</span>
                         </div>
                     </div>
 
-                    <!-- Step 2: Service Selection -->
-                    <div class="form-section" data-step="2">
-                        <div class="section-header">
-                            <h3 data-i18n="appointmentdetails">💇 Service Details</h3>
+                    <!-- Booking Form -->
+                    <form id="bookingForm" class="modern-booking-form">
+                        <!-- Step 1: Customer Information -->
+                        <div class="form-section active" data-section="1">
+                            <div class="section-header">
+                                <h3>📋 Your Information</h3>
+                                <p>Tell us a bit about yourself</p>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="customerName">Full Name *</label>
+                                    <input type="text" id="customerName" required placeholder="Kwame Mensah">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customerPhone">Phone Number *</label>
+                                    <input type="tel" id="customerPhone" required placeholder="+233 XX XXX XXXX">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customerEmail">Email (Optional)</label>
+                                    <input type="email" id="customerEmail" placeholder="kwame@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gpsAddress">GhanaPostGPS Address (Optional)</label>
+                                    <input type="text" id="gpsAddress" placeholder="GA-123-4567">
+                                    <small>Your digital address for better directions</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="locationSelect" data-i18n="location">Location</label>
-                                <select id="locationSelect" required class="modern-select">
-                                    <option value="">Select location...</option>
-                                </select>
+
+                        <!-- Step 2: Service Selection -->
+                        <div class="form-section" data-section="2">
+                            <div class="section-header">
+                                <h3>💇 Choose Your Service</h3>
+                                <p>Select the service you want</p>
                             </div>
+
                             <div class="form-group">
-                                <label for="ghanaPostGPS">GhanaPost GPS (Optional)</label>
-                                <input type="text" id="ghanaPostGPS" class="modern-input" placeholder="GA-123-4567">
-                            </div>
-                            <div class="form-group full-width">
-                                <label for="serviceSelect" data-i18n="selectservice">Select Service</label>
-                                <select id="serviceSelect" required class="modern-select">
+                                <label for="serviceSelect">Select Service *</label>
+                                <select id="serviceSelect" required>
                                     <option value="">Choose a service...</option>
                                 </select>
+                                <div class="service-details-preview">
+                                    <span>Price: <strong id="servicePrice">GHS 0</strong></span>
+                                    <span>Duration: <strong id="serviceDuration">-</strong></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="section-header">
-                            <h3 data-i18n="choosestaff">👤 Choose Your Stylist</h3>
-                        </div>
-                        <div class="staff-grid" id="staffGrid">
-                            <!-- Loaded by JavaScript -->
-                        </div>
-
-                        <div class="form-group">
-                            <label data-i18n="referencephoto">📸 Reference Photo (Optional)</label>
-                            <div class="file-upload-wrapper">
-                                <input type="file" id="referencePhoto" accept="image/*" class="file-input">
-                                <label for="referencePhoto" class="file-label">
-                                    <span class="upload-icon">📁</span>
-                                    <span>Upload Image</span>
-                                </label>
-                            </div>
-                            <div id="photoPreview" class="photo-preview"></div>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="specialRequests" data-i18n="specialrequests">Special Requests</label>
-                            <textarea id="specialRequests" rows="3" class="modern-textarea" placeholder="Any special requirements..."></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Date & Time -->
-                    <div class="form-section" data-step="3">
-                        <div class="section-header">
-                            <h3 data-i18n="datetime">📅 Select Date & Time</h3>
-                        </div>
-                        <div class="form-grid">
                             <div class="form-group">
-                                <label for="appointmentDate" data-i18n="selectdate">Select Date</label>
-                                <input type="date" id="appointmentDate" required class="modern-input">
+                                <label>📸 Reference Photo (Optional)</label>
+                                <div class="file-upload-wrapper">
+                                    <input type="file" id="referencePhoto" accept="image/*" class="file-input">
+                                    <label for="referencePhoto" class="file-label">
+                                        <span class="upload-icon">📤</span>
+                                        <span>Upload a photo of your desired style</span>
+                                    </label>
+                                </div>
+                                <div id="photoPreview" class="photo-preview" style="display: none;">
+                                    <img id="previewImage" src="" alt="Preview">
+                                    <button type="button" class="remove-photo" onclick="removePhoto()">×</button>
+                                </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="appointmentTime" data-i18n="selecttime">Select Time</label>
-                                <select id="appointmentTime" required class="modern-select">
-                                    <option value="">Choose time...</option>
-                                </select>
+                                <label for="specialRequests">Special Requests (Optional)</label>
+                                <textarea id="specialRequests" rows="4" placeholder="Any specific requirements or preferences..."></textarea>
                             </div>
+                        </div>
+
+                        <!-- Step 3: Date & Time -->
+                        <div class="form-section" data-section="3">
+                            <div class="section-header">
+                                <h3>📅 Select Date & Time</h3>
+                                <p>Choose when you'd like to visit</p>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="appointmentDate">Appointment Date *</label>
+                                    <input type="date" id="appointmentDate" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="appointmentTime">Appointment Time *</label>
+                                    <select id="appointmentTime" required>
+                                        <option value="">Choose time...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="time-note">
+                                <span class="note-icon">⚡</span>
+                                <p><strong>Off-peak discount:</strong> Book between 10AM-2PM on weekdays for 15% off!</p>
+                            </div>
+
+                            <div class="available-slots">
+                                <h4>Available Time Slots</h4>
+                                <div id="timeSlotGrid" class="time-slot-grid">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Payment & Confirmation -->
+                        <div class="form-section" data-section="4">
+                            <div class="section-header">
+                                <h3>💳 Payment & Confirmation</h3>
+                                <p>Review your booking and choose payment method</p>
+                            </div>
+
+                            <!-- Booking Summary -->
+                            <div class="booking-summary-card">
+                                <h4>Booking Summary</h4>
+                                <div class="summary-item">
+                                    <span>Customer:</span>
+                                    <strong id="summaryName">-</strong>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Phone:</span>
+                                    <strong id="summaryPhone">-</strong>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Service:</span>
+                                    <strong id="summaryService">-</strong>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Date:</span>
+                                    <strong id="summaryDate">-</strong>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Time:</span>
+                                    <strong id="summaryTime">-</strong>
+                                </div>
+                                <div class="summary-divider"></div>
+                                <div class="summary-item total-row">
+                                    <span>Total Amount:</span>
+                                    <strong id="summaryTotal" class="total-amount">GHS 0</strong>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="points-badge">🎁 Points you'll earn: <strong id="summaryPoints">0</strong></span>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div class="payment-methods">
+                                <h4>Select Payment Method</h4>
+                                <div class="payment-options">
+                                    <label class="payment-card">
+                                        <input type="radio" name="paymentMethod" value="momo" checked>
+                                        <div class="payment-content">
+                                            <span class="payment-icon">📱</span>
+                                            <div>
+                                                <strong>Mobile Money</strong>
+                                                <small>MTN MoMo, Vodafone Cash, AirtelTigo</small>
+                                            </div>
+                                        </div>
+                                    </label>
+
+                                    <label class="payment-card">
+                                        <input type="radio" name="paymentMethod" value="card">
+                                        <div class="payment-content">
+                                            <span class="payment-icon">💳</span>
+                                            <div>
+                                                <strong>Card Payment</strong>
+                                                <small>Visa, Mastercard, Verve</small>
+                                            </div>
+                                        </div>
+                                    </label>
+
+                                    <label class="payment-card">
+                                        <input type="radio" name="paymentMethod" value="salon">
+                                        <div class="payment-content">
+                                            <span class="payment-icon">💰</span>
+                                            <div>
+                                                <strong>Pay at Salon</strong>
+                                                <small>Cash or card at appointment</small>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="terms-checkbox">
+                                <input type="checkbox" id="termsAgree" required>
+                                <label for="termsAgree">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Cancellation Policy</a></label>
+                            </div>
+                        </div>
+
+                        <!-- Form Navigation -->
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary" id="prevButton" style="display: none;">
+                                ← Previous
+                            </button>
+                            <button type="button" class="btn btn-primary" id="nextButton">
+                                Next →
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-large" id="submitButton" style="display: none;">
+                                Confirm Booking ✓
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sidebar Summary (Desktop) -->
+                <div class="booking-sidebar">
+                    <div class="sidebar-card sticky-card">
+                        <h4>💰 Price Summary</h4>
+                        <div class="price-row">
+                            <span>Service Price</span>
+                            <strong id="sidebarPrice">GHS 0</strong>
+                        </div>
+                        <div class="price-row">
+                            <span>Duration</span>
+                            <strong id="sidebarDuration">-</strong>
+                        </div>
+                        <div class="price-row discount-row" id="discountRow" style="display: none;">
+                            <span>🎉 Off-Peak Discount (15%)</span>
+                            <strong id="sidebarDiscount">- GHS 0</strong>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="price-row total-row">
+                            <span>Total</span>
+                            <strong id="sidebarTotal" class="total-amount">GHS 0</strong>
+                        </div>
+                        <div class="points-info">
+                            <span class="points-badge">🎁 You'll earn <strong id="sidebarPoints">0</strong> points</span>
                         </div>
                     </div>
 
-                    <!-- Step 4: Payment & Summary -->
-                    <div class="form-section" data-step="4">
-                        <div class="section-header">
-                            <h3 data-i18n="pricesummary">💰 Price Summary</h3>
-                        </div>
-                        <div class="price-summary-card">
-                            <div class="price-row">
-                                <span data-i18n="serviceprice">Service Price</span>
-                                <strong id="basePrice">GHS 0</strong>
-                            </div>
-                            <div class="price-row">
-                                <span data-i18n="duration">Duration</span>
-                                <span id="serviceDuration">-</span>
-                            </div>
-                            <div class="price-row discount-row" id="discountRow" style="display: none;">
-                                <span class="discount-text">🎉 Off-Peak Discount (15%)</span>
-                                <span id="discountAmount" class="discount-text">-GHS 0</span>
-                            </div>
-                            <div class="price-row total-row">
-                                <span data-i18n="totalprice">Total Price</span>
-                                <strong id="totalPrice" class="total-amount">GHS 0</strong>
-                            </div>
-                            <div class="price-row loyalty-row">
-                                <span data-i18n="loyaltypoints">🎁 Points You'll Earn</span>
-                                <span id="pointsEarned" class="points-badge">0 points</span>
-                            </div>
-                        </div>
-
-                        <div class="section-header">
-                            <h3 data-i18n="paymentmethod">💳 Payment Method</h3>
-                        </div>
-                        <div class="payment-options">
-                            <label class="payment-card">
-                                <input type="radio" name="payment" value="Mobile Money" checked>
-                                <div class="payment-content">
-                                    <span class="payment-icon">📱</span>
-                                    <div>
-                                        <strong data-i18n="mobilemoney">Mobile Money</strong>
-                                        <small>MTN MoMo, Vodafone Cash</small>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="payment-card">
-                                <input type="radio" name="payment" value="Card">
-                                <div class="payment-content">
-                                    <span class="payment-icon">💳</span>
-                                    <div>
-                                        <strong data-i18n="card">Card Payment</strong>
-                                        <small>Visa, Mastercard</small>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="payment-card">
-                                <input type="radio" name="payment" value="Pay at Salon">
-                                <div class="payment-content">
-                                    <span class="payment-icon">💵</span>
-                                    <div>
-                                        <strong data-i18n="paysalon">Pay at Salon</strong>
-                                        <small>Cash at appointment</small>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
+                    <div class="sidebar-card">
+                        <h4>📞 Need Help?</h4>
+                        <p>Contact us if you have any questions</p>
+                        <a href="tel:+233XXXXXXXXX" class="btn btn-secondary btn-small btn-block">Call Us</a>
+                        <a href="https://wa.me/233XXXXXXXXX" class="btn btn-secondary btn-small btn-block">WhatsApp</a>
                     </div>
 
-                    <!-- Navigation Buttons -->
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">
-                            ← Previous
-                        </button>
-                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
-                            Next →
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-large" id="submitBtn" style="display: none;" data-i18n="confirmbooking">
-                            Confirm Booking ✓
-                        </button>
+                    <div class="sidebar-card trust-card">
+                        <div class="trust-item">
+                            <span>🔒</span>
+                            <div>
+                                <strong>Secure Booking</strong>
+                                <small>Your data is protected</small>
+                            </div>
+                        </div>
+                        <div class="trust-item">
+                            <span>✅</span>
+                            <div>
+                                <strong>Instant Confirmation</strong>
+                                <small>Get SMS & email alerts</small>
+                            </div>
+                        </div>
+                        <div class="trust-item">
+                            <span>🎁</span>
+                            <div>
+                                <strong>Loyalty Rewards</strong>
+                                <small>Earn with every booking</small>
+                            </div>
+                        </div>
                     </div>
-
-                </form>
+                </div>
             </div>
         </div>
     </section>
@@ -255,73 +354,132 @@
             <div class="success-animation">
                 <div class="success-icon">✓</div>
             </div>
-            <h2 data-i18n="bookingconfirmed">Booking Confirmed!</h2>
+            <h2>Booking Confirmed! 🎉</h2>
             <p>Your appointment has been successfully booked.</p>
+
             <div id="bookingDetails" class="booking-details-modal"></div>
-            <div class="loyalty-badge">
-                <span data-i18n="pointsearned">Points Earned</span>
-                <strong id="pointsAdded">0</strong>
-            </div>
+
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="closeModal()" data-i18n="done">Done</button>
-                <button class="btn btn-secondary" onclick="closeModal(); location.reload();" data-i18n="bookanother">Book Another</button>
+                <button onclick="closeModal()" class="btn btn-primary btn-large">Done</button>
+                <button onclick="window.location.href='booking.html'" class="btn btn-secondary">Book Another</button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="footer modern-footer">
+    <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footerrights">All rights reserved.</span></p>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ghana Salon Booking. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="database-manager.js"></script>
+    <script src="script.js"></script>
     <script src="translations.js"></script>
-    <script src="enhanced-script.js"></script>
-
     <script>
+        // Multi-step form functionality
         let currentStep = 1;
         const totalSteps = 4;
 
-        function changeStep(direction) {
-            const newStep = currentStep + direction;
-            if (newStep < 1 || newStep > totalSteps) return;
+        function showStep(step) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
 
-            // Hide current step
-            document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.remove('active');
-            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+            // Show current section
+            document.querySelector(`[data-section="${step}"]`).classList.add('active');
 
-            // Show new step
-            currentStep = newStep;
-            document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.add('active');
-            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+            // Update progress
+            document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
+                if (index < step) {
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active');
+                }
+            });
 
             // Update buttons
-            document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'inline-block';
-            document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'inline-block';
-            document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+            document.getElementById('prevButton').style.display = step === 1 ? 'none' : 'inline-flex';
+            document.getElementById('nextButton').style.display = step === totalSteps ? 'none' : 'inline-flex';
+            document.getElementById('submitButton').style.display = step === totalSteps ? 'inline-flex' : 'none';
+
+            // Update summary on final step
+            if (step === 4) {
+                updateSummary();
+            }
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Photo preview
+        function updateSummary() {
+            document.getElementById('summaryName').textContent = document.getElementById('customerName').value || '-';
+            document.getElementById('summaryPhone').textContent = document.getElementById('customerPhone').value || '-';
+
+            const serviceSelect = document.getElementById('serviceSelect');
+            const serviceName = serviceSelect.options[serviceSelect.selectedIndex]?.text || '-';
+            document.getElementById('summaryService').textContent = serviceName;
+
+            const date = document.getElementById('appointmentDate').value;
+            document.getElementById('summaryDate').textContent = date ? new Date(date).toLocaleDateString('en-GB') : '-';
+
+            document.getElementById('summaryTime').textContent = document.getElementById('appointmentTime').value || '-';
+
+            const price = document.getElementById('servicePrice').textContent;
+            document.getElementById('summaryTotal').textContent = price;
+
+            const points = Math.floor(parseInt(price.replace(/[^0-9]/g, '')) / 10);
+            document.getElementById('summaryPoints').textContent = points;
+        }
+
+        function validateStep(step) {
+            const section = document.querySelector(`[data-section="${step}"]`);
+            const inputs = section.querySelectorAll('input[required], select[required]');
+
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    input.focus();
+                    alert(`Please fill in all required fields`);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        document.getElementById('nextButton')?.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevButton')?.addEventListener('click', () => {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        // Reference photo preview
         document.getElementById('referencePhoto')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('photoPreview').innerHTML = 
-                        `<img src="${e.target.result}" alt="Preview"><button type="button" onclick="this.parentElement.innerHTML=''" class="remove-photo">×</button>`;
+                reader.onload = function(event) {
+                    document.getElementById('previewImage').src = event.target.result;
+                    document.getElementById('photoPreview').style.display = 'block';
                 };
                 reader.readAsDataURL(file);
             }
         });
+
+        function removePhoto() {
+            document.getElementById('referencePhoto').value = '';
+            document.getElementById('photoPreview').style.display = 'none';
+        }
+
+        // Initialize
+        showStep(1);
     </script>
 </body>
 </html>

@@ -3,46 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghana Salon Booking - Premium Hair & Beauty Services</title>
-    <meta name="description" content="Book top barbers, hairstylists & beauty experts in Accra, Kumasi & beyond. Real-time slots, Mobile Money payments, loyalty rewards.">
+    <title>Ghana Salon Booking - Professional Hair & Beauty Services</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FF6B35">
+    <meta name="description" content="Book professional salon and barbershop services across Ghana. Instant bookings, Mobile Money payments, loyalty rewards.">
 </head>
 <body>
-    <!-- Install Banner -->
-    <div id="installBanner" class="install-banner" style="display: none;">
-        <div class="install-content">
-            <div class="install-icon">📱</div>
-            <div class="install-text">
-                <h4>Install Ghana Salon Booking</h4>
-                <p>Quick access from your home screen</p>
-            </div>
-            <button onclick="installPWA()" class="btn btn-primary btn-small">Install</button>
-            <button onclick="closeInstallBanner()" class="btn-close">&times;</button>
-        </div>
-    </div>
-
     <!-- Modern Header -->
     <header class="header modern-header">
         <div class="container">
             <div class="logo">
-                <span class="logo-icon">🇬🇭</span>
-                <h1>Ghana Salon Booking</h1>
+                <span class="logo-icon">✂️</span>
+                <h1>Ghana Salon</h1>
             </div>
             <nav class="nav-menu">
-                <a href="index.html" class="nav-link active" data-i18n="navhome">Home</a>
-                <a href="profile.html" class="nav-link" data-i18n="navprofile">My Profile</a>
-                <a href="admin.html" class="nav-link admin-link" data-i18n="navadmin">Admin</a>
+                <a href="index.html" class="nav-link active" data-i18n="nav_home">Home</a>
+                <a href="profile.html" class="nav-link" data-i18n="nav_profile">My Profile</a>
+                <a href="admin.html" class="nav-link" data-i18n="nav_admin">Admin</a>
                 <select id="languageSelector" class="language-selector">
                     <option value="en">🇬🇧 English</option>
-                    <option value="tw">Twi</option>
-                    <option value="ga">Ga</option>
-                    <option value="ee">Ewe</option>
+                    <option value="tw">🇬🇭 Twi</option>
+                    <option value="ga">🇬🇭 Ga</option>
+                    <option value="ee">🇬🇭 Ewe</option>
                 </select>
             </nav>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -50,202 +37,412 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero modern-hero">
+    <!-- Hero Section with Ghana Imagery -->
+    <section class="modern-hero">
         <div class="hero-pattern"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">🇬🇭 Proudly Ghanaian</div>
-                <h2 class="hero-title" data-i18n="herotitle">Your Perfect Look,<br>One Click Away</h2>
-                <p class="hero-subtitle" data-i18n="herosubtitle">Connect with professional barbers and hairstylists across Ghana. Real-time bookings, Mobile Money payments, loyalty rewards.</p>
-                <div class="hero-buttons">
-                    <a href="#businesses" class="btn btn-primary btn-large smooth-scroll" data-i18n="browsesalons">
-                        <span>Browse Salons</span>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="booking.html" class="btn btn-secondary btn-large" data-i18n="booknow">Book Now</a>
-                </div>
+                <h1 class="hero-title" data-i18n="hero_title">Book Your Perfect Look</h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">
+                    Connect with professional barbers and hairstylists across Ghana. 
+                    Real-time bookings, Mobile Money payments, loyalty rewards.
+                </p>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <strong>500+</strong>
-                        <span>Stylists</span>
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Professional Stylists</span>
                     </div>
                     <div class="stat-item">
-                        <strong>10k+</strong>
-                        <span>Happy Clients</span>
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Happy Customers</span>
                     </div>
                     <div class="stat-item">
-                        <strong>4.9★</strong>
-                        <span>Average Rating</span>
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Cities in Ghana</span>
                     </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#services" class="btn btn-primary btn-large">Book Now 🚀</a>
+                    <a href="#how-it-works" class="btn btn-secondary btn-large">How It Works</a>
+                </div>
+                <div class="trust-badges">
+                    <span>💳 MTN MoMo</span>
+                    <span>📱 Vodafone Cash</span>
+                    <span>💳 Card Payments</span>
+                    <span>🔒 Secure</span>
                 </div>
             </div>
             <div class="hero-image">
-                <div class="hero-img-wrapper">
-                    <div class="hero-img-placeholder">
-                        <div class="placeholder-icon">💇‍♂️</div>
-                        <p>Professional Ghanaian Stylist</p>
+                <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=800&fit=crop" 
+                     alt="Professional Ghanaian Stylist" 
+                     class="floating-image">
+                <div class="image-decoration kente-pattern"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Services Section -->
+    <section id="services" class="section services-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-badge">Our Services</span>
+                <h2>Choose Your Experience</h2>
+                <p>Professional grooming and styling services tailored for you</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Barbershop Card -->
+                <div class="service-card modern-card" onclick="selectBusiness('barber')">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1622287162716-f311baa397e1?w=500&h=400&fit=crop" 
+                             alt="Barbershop Services">
+                        <div class="card-overlay">
+                            <span class="overlay-text">Book Now →</span>
+                        </div>
                     </div>
-                    <div class="hero-img-accent"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3>✂️ Kofi's Classic Cuts</h3>
+                            <span class="rating-badge">⭐ 4.9</span>
+                        </div>
+                        <p class="location">📍 Osu, Accra</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Haircuts</span>
+                            <span class="feature-tag">Beard Trim</span>
+                            <span class="feature-tag">Hot Shave</span>
+                        </div>
+                        <div class="service-pricing">
+                            <span class="price-from">From GHS 50</span>
+                            <span class="booking-count">2,345 bookings</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hair Salon Card -->
+                <div class="service-card modern-card" onclick="selectBusiness('salon')">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=500&h=400&fit=crop" 
+                             alt="Hair Salon Services">
+                        <div class="card-overlay">
+                            <span class="overlay-text">Book Now →</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3>💇 Ama's Beauty Haven</h3>
+                            <span class="rating-badge">⭐ 4.8</span>
+                        </div>
+                        <p class="location">📍 East Legon, Accra</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Braids</span>
+                            <span class="feature-tag">Weaving</span>
+                            <span class="feature-tag">Natural Hair</span>
+                        </div>
+                        <div class="service-pricing">
+                            <span class="price-from">From GHS 80</span>
+                            <span class="booking-count">3,892 bookings</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features modern-features">
+    <!-- Why Choose Us Section -->
+    <section class="section why-section">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header text-center">
                 <span class="section-badge">Why Choose Us</span>
-                <h3 data-i18n="whychoose">Ghana's Most Trusted Booking Platform</h3>
-                <p>Everything you need for the perfect salon experience</p>
+                <h2>Everything you need for the perfect salon experience</h2>
             </div>
+
             <div class="features-grid">
-                <div class="feature-card glass-effect">
-                    <div class="feature-icon">
-                        <div class="icon-wrapper primary">📱</div>
-                    </div>
-                    <h4 data-i18n="featurepwa">PWA Enabled</h4>
-                    <p data-i18n="featurepwadesc">Install on your phone, works offline. Access anytime, anywhere.</p>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>PWA Technology</h3>
+                    <p>Install on your phone, works offline. Access anytime, anywhere.</p>
                 </div>
-                <div class="feature-card glass-effect">
-                    <div class="feature-icon">
-                        <div class="icon-wrapper success">⚡</div>
-                    </div>
-                    <h4 data-i18n="featurerealtime">Real-Time Booking</h4>
-                    <p data-i18n="featurerealtimedesc">See available slots instantly. Book in seconds, no phone calls needed.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Booking</h3>
+                    <p>See available slots instantly. Book in seconds, no phone calls needed.</p>
                 </div>
-                <div class="feature-card glass-effect">
-                    <div class="feature-icon">
-                        <div class="icon-wrapper warning">💳</div>
-                    </div>
-                    <h4 data-i18n="featurepayment">Secure Payment</h4>
-                    <p data-i18n="featurepaymentdesc">MTN MoMo, Vodafone Cash, Cards or pay at salon. Your choice.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Flexible Payments</h3>
+                    <p>MTN MoMo, Vodafone Cash, Cards or pay at salon. Your choice.</p>
                 </div>
-                <div class="feature-card glass-effect">
-                    <div class="feature-icon">
-                        <div class="icon-wrapper purple">⭐</div>
-                    </div>
-                    <h4 data-i18n="featureloyalty">Loyalty Rewards</h4>
-                    <p data-i18n="featureloyaltydesc">Earn points with every booking. Redeem for free services!</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Loyalty Rewards</h3>
+                    <p>Earn points with every booking. Redeem for free services!</p>
                 </div>
-                <div class="feature-card glass-effect">
-                    <div class="feature-icon">
-                        <div class="icon-wrapper info">👑</div>
-                    </div>
-                    <h4 data-i18n="featurechoose">Choose Your Stylist</h4>
-                    <p data-i18n="featurechoosedesc">Browse portfolios, read reviews, book your favorite professional.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Choose Your Stylist</h3>
+                    <p>Browse portfolios, read reviews, book your favorite professional.</p>
                 </div>
-                <div class="feature-card glass-effect">
-                    <div class="feature-icon">
-                        <div class="icon-wrapper danger">🆘</div>
-                    </div>
-                    <h4 data-i18n="featuresupport">24/7 Support</h4>
-                    <p data-i18n="featuresupportdesc">WhatsApp, Live Chat, or Call. We're always here to help.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>24/7 Support</h3>
+                    <p>WhatsApp, Live Chat, or Call. We're always here to help.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Businesses Section -->
-    <section class="businesses modern-businesses" id="businesses">
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section how-it-works-section">
         <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Popular Salons</span>
-                <h3 data-i18n="choosesalon">Find Your Perfect Salon</h3>
+            <div class="section-header text-center">
+                <span class="section-badge">Simple Process</span>
+                <h2>Book in 3 Easy Steps</h2>
             </div>
-            <div class="location-filters">
-                <div class="filter-buttons">
-                    <button class="location-btn active" onclick="filterByLocation('all')" data-i18n="allcities">
-                        <span class="btn-icon">🇬🇭</span> All Cities
-                    </button>
-                    <button class="location-btn" onclick="filterByLocation('accra')" data-i18n="cityaccra">
-                        <span class="btn-icon">🏙️</span> Accra
-                    </button>
-                    <button class="location-btn" onclick="filterByLocation('kumasi')" data-i18n="citykumasi">
-                        <span class="btn-icon">🌆</span> Kumasi
-                    </button>
-                    <button class="location-btn" onclick="filterByLocation('takoradi')" data-i18n="citytakoradi">
-                        <span class="btn-icon">🌊</span> Takoradi
-                    </button>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">🔍</div>
+                    <h3>Choose Service</h3>
+                    <p>Select your preferred salon or barbershop and service</p>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">📅</div>
+                    <h3>Pick Date & Time</h3>
+                    <p>See real-time availability and book your slot</p>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">✅</div>
+                    <h3>Get Styled!</h3>
+                    <p>Receive confirmation and enjoy your appointment</p>
                 </div>
             </div>
-            <div class="business-grid" id="businessGrid">
-                <!-- Loaded dynamically by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Gallery Section with Ghana Photos -->
+    <section class="section gallery-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-badge">Our Work</span>
+                <h2>Transformations That Speak</h2>
+                <p>See the magic our talented stylists create every day</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&h=400&fit=crop" alt="Haircut transformation">
+                    <div class="gallery-overlay">
+                        <span>Classic Fade</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1595475207225-428b7973e2b3?w=400&h=400&fit=crop" alt="Braiding style">
+                    <div class="gallery-overlay">
+                        <span>Ghana Weaving</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1622286346003-c0fe5e2fedc0?w=400&h=400&fit=crop" alt="Beard grooming">
+                    <div class="gallery-overlay">
+                        <span>Beard Sculpting</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400&h=400&fit=crop" alt="Natural hair styling">
+                    <div class="gallery-overlay">
+                        <span>Natural Hair Care</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1521490878687-e4c3b4e0daca?w=400&h=400&fit=crop" alt="Box braids">
+                    <div class="gallery-overlay">
+                        <span>Box Braids</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=400&h=400&fit=crop" alt="Cornrows">
+                    <div class="gallery-overlay">
+                        <span>Cornrows</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-badge">Testimonials</span>
+                <h2>What Our Customers Say</h2>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <p>"Best booking experience! I can finally schedule my appointments without calling. The loyalty points are a great bonus!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">K</div>
+                        <div>
+                            <strong>Kwame Mensah</strong>
+                            <span>Accra, Ghana</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <p>"Love that I can pay with Mobile Money! The stylists are professional and the app is so easy to use. Highly recommend!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div>
+                            <strong>Abena Osei</strong>
+                            <span>Kumasi, Ghana</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <p>"The service is fantastic! I can see my favorite barber's available times and book instantly. No more waiting in line!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">Y</div>
+                        <div>
+                            <strong>Yaw Boateng</strong>
+                            <span>Takoradi, Ghana</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="section cta-section">
         <div class="container">
             <div class="cta-content">
-                <h3>Ready to Transform Your Look?</h3>
+                <h2>Ready to Transform Your Look?</h2>
                 <p>Join thousands of satisfied customers across Ghana</p>
-                <a href="booking.html" class="btn btn-primary btn-large">Start Booking Now</a>
+                <a href="#services" class="btn btn-primary btn-large">Start Booking Now 🎉</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer modern-footer">
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>🇬🇭 Ghana Salon Booking</h3>
-                    <p>Connecting Ghana's best stylists with clients nationwide.</p>
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="logo">
+                        <span class="logo-icon">✂️</span>
+                        <h3>Ghana Salon</h3>
+                    </div>
+                    <p>Professional hair and beauty services across Ghana. Book online, pay with Mobile Money, earn rewards.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="Instagram">📸</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                        <a href="#" aria-label="WhatsApp">💬</a>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <div class="footer-col">
-                        <h4>Quick Links</h4>
-                        <a href="index.html">Home</a>
-                        <a href="profile.html">My Profile</a>
-                        <a href="booking.html">Book Now</a>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Support</h4>
-                        <a href="#">Help Center</a>
-                        <a href="#">Contact Us</a>
-                        <a href="#">Privacy Policy</a>
-                    </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="booking.html">Book Now</a></li>
+                        <li><a href="profile.html">My Profile</a></li>
+                        <li><a href="admin.html">Business Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Haircuts</a></li>
+                        <li><a href="#">Braiding</a></li>
+                        <li><a href="#">Natural Hair Care</a></li>
+                        <li><a href="#">Beard Grooming</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>📞 +233 XX XXX XXXX</li>
+                        <li>✉️ info@ghanasalon.com</li>
+                        <li>📍 Accra, Ghana</li>
+                        <li>🕐 Mon-Sat: 9AM-7PM</li>
+                    </ul>
                 </div>
             </div>
+
             <div class="footer-bottom">
-                <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footerrights">All rights reserved.</span></p>
-                <p class="made-in-ghana">Made with ❤️ in Ghana</p>
+                <p>&copy; 2026 Ghana Salon Booking. <span data-i18n="footer_rights">All rights reserved.</span></p>
+                <p><span data-i18n="footer_serving">Serving Ghana nationwide</span> 🇬🇭</p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="database-manager.js"></script>
-    <script src="translations.js"></script>
-    <script src="enhanced-script.js"></script>
-    <script>
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('✅ Service Worker registered'))
-                .catch(err => console.log('❌ Service Worker registration failed', err));
-        }
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="install-content">
+            <span class="install-icon">📱</span>
+            <div>
+                <strong data-i18n="install_app">Install Our App</strong>
+                <p data-i18n="install_subtitle">Quick access from your home screen</p>
+            </div>
+            <button id="installButton" class="btn btn-primary btn-small" data-i18n="install_now">Install</button>
+            <button id="dismissInstall" class="btn btn-secondary btn-small">Later</button>
+        </div>
+    </div>
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('.smooth-scroll').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
+    <script src="script.js"></script>
+    <script src="translations.js"></script>
+    <script>
+        // PWA Installation
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installButton = document.getElementById('installButton');
+        const dismissButton = document.getElementById('dismissInstall');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.classList.remove('hidden');
         });
 
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            document.querySelector('.nav-menu').classList.toggle('active');
+        installButton?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installPrompt.classList.add('hidden');
+            }
+        });
+
+        dismissButton?.addEventListener('click', () => {
+            installPrompt.classList.add('hidden');
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
         }
     </script>
 </body>

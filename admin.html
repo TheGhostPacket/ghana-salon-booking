@@ -3,362 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Ghana Salon Booking</title>
+    <title>Admin Dashboard - Ghana Salon</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <meta name="theme-color" content="#1F2937">
+    <meta name="theme-color" content="#FF6B35">
 </head>
-<body class="admin-body">
-
-    <!-- Login Section -->
-    <section class="admin-section admin-login-section" id="loginSection">
+<body>
+    <!-- Header -->
+    <header class="header modern-header">
         <div class="container">
-            <div class="login-card modern-login-card">
-                <div class="login-header">
-                    <div class="login-icon">🔐</div>
-                    <h2>Admin Access</h2>
-                    <p>Ghana Salon Booking Dashboard</p>
-                </div>
-                <form id="loginForm" class="modern-form">
-                    <div class="form-group">
-                        <label for="businessSelect">Select Business</label>
-                        <select id="businessSelect" required class="modern-select">
-                            <option value="">Choose your salon...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="adminPassword">Password</label>
-                        <input type="password" id="adminPassword" required class="modern-input" placeholder="Enter password">
-                        <small class="form-hint">Demo: admin123</small>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <span>Login to Dashboard</span>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </form>
-                <div class="login-footer">
-                    <a href="index.html">← Back to Home</a>
-                </div>
+            <div class="logo">
+                <span class="logo-icon">✂️</span>
+                <h1>Ghana Salon - Admin</h1>
             </div>
-        </div>
-    </section>
-
-    <!-- Dashboard Section -->
-    <section class="admin-section admin-dashboard-section" id="dashboardSection" style="display: none;">
-
-        <!-- Sidebar -->
-        <aside class="admin-sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <span class="logo-icon">🇬🇭</span>
-                    <h3>Admin Panel</h3>
-                </div>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="sidebar-link active" data-section="overview">
-                    <span class="link-icon">📊</span>
-                    <span>Overview</span>
-                </a>
-                <a href="#" class="sidebar-link" data-section="appointments">
-                    <span class="link-icon">📅</span>
-                    <span>Appointments</span>
-                </a>
-                <a href="#" class="sidebar-link" data-section="analytics">
-                    <span class="link-icon">📈</span>
-                    <span>Analytics</span>
-                </a>
-                <a href="#" class="sidebar-link" data-section="settings">
-                    <span class="link-icon">⚙️</span>
-                    <span>Settings</span>
-                </a>
+            <nav class="nav-menu" id="adminNav" style="display: none;">
+                <a href="index.html" class="nav-link">Home</a>
+                <span class="nav-link" id="businessName"></span>
+                <button onclick="adminLogout()" class="btn btn-danger btn-small">Logout</button>
             </nav>
-            <div class="sidebar-footer">
-                <button onclick="logout()" class="btn btn-secondary btn-small btn-block" id="logoutBtn">
-                    <span>Logout</span>
-                </button>
-            </div>
-        </aside>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="admin-main">
-
-            <!-- Header -->
-            <header class="admin-header">
-                <div class="admin-header-content">
-                    <div>
-                        <h1 id="businessName">Dashboard</h1>
-                        <p id="businessLocation" class="header-subtitle"></p>
-                    </div>
-                    <div class="header-actions">
-                        <button class="icon-btn" title="Notifications">
-                            <span class="notification-badge">3</span>
-                            🔔
-                        </button>
-                        <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-                            🌙
-                        </button>
-                    </div>
+    <!-- Admin Login Section -->
+    <section id="loginSection" class="admin-login-section">
+        <div class="container">
+            <div class="admin-login-card">
+                <div class="login-illustration">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500&h=600&fit=crop" alt="Admin login">
                 </div>
-            </header>
+                <div class="login-form-area">
+                    <div class="login-header">
+                        <h2>🔐 Admin Login</h2>
+                        <p>Please select your business to view appointments</p>
+                    </div>
 
-            <!-- Stats Cards -->
-            <section class="stats-section">
-                <div class="stats-grid">
-                    <div class="stat-card stat-primary">
-                        <div class="stat-icon">📅</div>
-                        <div class="stat-info">
-                            <p class="stat-label">Total Bookings</p>
-                            <h3 class="stat-value" id="totalBookings">0</h3>
-                            <span class="stat-change positive">+12% this week</span>
-                        </div>
-                    </div>
-                    <div class="stat-card stat-success">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-info">
-                            <p class="stat-label">Today's Bookings</p>
-                            <h3 class="stat-value" id="todayBookings">0</h3>
-                            <span class="stat-change positive">+5 today</span>
-                        </div>
-                    </div>
-                    <div class="stat-card stat-warning">
-                        <div class="stat-icon">💰</div>
-                        <div class="stat-info">
-                            <p class="stat-label">Total Revenue</p>
-                            <h3 class="stat-value" id="totalRevenue">GHS 0</h3>
-                            <span class="stat-change positive">+18% this month</span>
-                        </div>
-                    </div>
-                    <div class="stat-card stat-info">
-                        <div class="stat-icon">🔜</div>
-                        <div class="stat-info">
-                            <p class="stat-label">Upcoming</p>
-                            <h3 class="stat-value" id="upcomingCount">0</h3>
-                            <span class="stat-change neutral">Next 7 days</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Charts Section -->
-            <section class="charts-section">
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <div class="card-header">
-                            <h3>Popular Services</h3>
-                            <select class="chart-filter">
-                                <option>This Week</option>
-                                <option>This Month</option>
-                                <option>This Year</option>
+                    <form id="loginForm" class="admin-login-form">
+                        <div class="form-group">
+                            <label for="businessSelect">Select Your Business</label>
+                            <select id="businessSelect" required>
+                                <option value="">Choose your business...</option>
+                                <option value="barber">✂️ Kofi's Classic Cuts (Barbershop)</option>
+                                <option value="salon">💇 Ama's Beauty Haven (Hair Salon)</option>
                             </select>
                         </div>
-                        <div class="chart-container">
-                            <canvas id="servicesChart"></canvas>
-                        </div>
-                        <div id="popularServices" class="chart-legend"></div>
-                    </div>
 
-                    <div class="chart-card">
-                        <div class="card-header">
-                            <h3>Peak Hours</h3>
+                        <div class="form-group">
+                            <label for="adminPassword">Password</label>
+                            <input type="password" id="adminPassword" required placeholder="Enter your password">
+                            <small class="demo-note">Demo password: <strong>admin123</strong></small>
                         </div>
-                        <div class="chart-container">
-                            <canvas id="peakHoursChart"></canvas>
-                        </div>
-                        <div id="peakHours" class="chart-data"></div>
-                    </div>
 
-                    <div class="chart-card">
-                        <div class="card-header">
-                            <h3>Staff Performance</h3>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="staffChart"></canvas>
-                        </div>
-                        <div id="staffPerformance" class="chart-data"></div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="card-header">
-                            <h3>Customer Insights</h3>
-                        </div>
-                        <div class="customer-stats">
-                            <div class="customer-stat">
-                                <div class="stat-circle new">
-                                    <strong id="newCustomers">0</strong>
-                                </div>
-                                <p>New Customers</p>
-                            </div>
-                            <div class="customer-stat">
-                                <div class="stat-circle returning">
-                                    <strong id="returningCustomers">0</strong>
-                                </div>
-                                <p>Returning</p>
-                            </div>
-                            <div class="customer-stat">
-                                <div class="stat-circle retention">
-                                    <strong id="retentionRate">0%</strong>
-                                </div>
-                                <p>Retention Rate</p>
-                            </div>
-                        </div>
-                    </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-large">
+                            Login to Dashboard 🚀
+                        </button>
+                    </form>
                 </div>
-            </section>
-
-            <!-- Appointments Table -->
-            <section class="appointments-section">
-                <div class="section-header-inline">
-                    <h3>Recent Appointments</h3>
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" onclick="filterAppointments('all')">All</button>
-                        <button class="filter-btn" onclick="filterAppointments('today')">Today</button>
-                        <button class="filter-btn" onclick="filterAppointments('upcoming')">Upcoming</button>
-                        <button class="filter-btn" onclick="filterAppointments('completed')">Completed</button>
-                    </div>
-                </div>
-                <div class="table-card">
-                    <div class="table-container">
-                        <table class="modern-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Customer</th>
-                                    <th>Phone</th>
-                                    <th>Staff</th>
-                                    <th>Service</th>
-                                    <th>Price</th>
-                                    <th>Payment</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="appointmentsTableBody">
-                                <tr>
-                                    <td colspan="10" class="no-data">
-                                        <div class="empty-state">
-                                            <span class="empty-icon">📅</span>
-                                            <p>No appointments yet</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-        </main>
-    </section>
-
-    <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="modal">
-        <div class="modal-content modal-small">
-            <div class="modal-header">
-                <h3>Confirm Delete</h3>
-                <button onclick="closeDeleteModal()" class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="warning-icon">⚠️</div>
-                <p>Are you sure you want to delete this appointment? This action cannot be undone.</p>
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="database-manager.js"></script>
-    <script src="translations.js"></script>
-    <script src="enhanced-script.js"></script>
+    <!-- Admin Dashboard Section -->
+    <section id="dashboardSection" class="admin-dashboard-section" style="display: none;">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div>
+                    <h2>Dashboard Overview</h2>
+                    <p id="businessLocation">Welcome back!</p>
+                </div>
+                <div class="dashboard-actions">
+                    <button onclick="loadDashboard()" class="btn btn-secondary">
+                        🔄 Refresh
+                    </button>
+                    <button onclick="clearAllAppointments()" class="btn btn-danger">
+                        🗑️ Clear All
+                    </button>
+                </div>
+            </div>
 
+            <!-- Stats Cards -->
+            <div class="admin-stats-grid">
+                <div class="stat-card primary-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-details">
+                        <h4>Total Bookings</h4>
+                        <div class="stat-number" id="totalBookings">0</div>
+                        <span class="stat-trend positive">+12% this week</span>
+                    </div>
+                </div>
+
+                <div class="stat-card success-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-details">
+                        <h4>Today's Bookings</h4>
+                        <div class="stat-number" id="todayBookings">0</div>
+                        <span class="stat-trend">+5 today</span>
+                    </div>
+                </div>
+
+                <div class="stat-card warning-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-details">
+                        <h4>Total Revenue</h4>
+                        <div class="stat-number" id="totalRevenue">GHS 0</div>
+                        <span class="stat-trend positive">+18% this month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card info-card">
+                    <div class="stat-icon">🔜</div>
+                    <div class="stat-details">
+                        <h4>Upcoming</h4>
+                        <div class="stat-number" id="upcomingCount">0</div>
+                        <span class="stat-trend">Next 7 days</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>📈 Popular Services</h3>
+                    <div id="servicesChart" class="chart-container">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>⏰ Peak Hours</h3>
+                    <div id="peakHoursChart" class="chart-container">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Insights -->
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h4>👥 Customer Insights</h4>
+                    <div class="insight-stats">
+                        <div class="insight-item">
+                            <strong id="newCustomers">0</strong>
+                            <span>New Customers</span>
+                        </div>
+                        <div class="insight-item">
+                            <strong id="returningCustomers">0</strong>
+                            <span>Returning</span>
+                        </div>
+                        <div class="insight-item">
+                            <strong id="retentionRate">0%</strong>
+                            <span>Retention Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments Table -->
+            <div class="appointments-table-section">
+                <div class="table-header">
+                    <h3>📋 Recent Appointments</h3>
+                    <div class="table-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="today">Today</button>
+                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                        <button class="filter-btn" data-filter="past">Past</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Service</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentsTableBody">
+                            <tr>
+                                <td colspan="8" class="empty-table">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">📭</div>
+                                        <p>No appointments yet</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ghana Salon Booking - Admin Dashboard. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
     <script>
-        // Initialize Charts
-        function initCharts() {
-            // Services Chart
-            const servicesCtx = document.getElementById('servicesChart');
-            if (servicesCtx) {
-                new Chart(servicesCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Haircuts', 'Braids', 'Coloring', 'Relaxer', 'Other'],
-                        datasets: [{
-                            data: [35, 25, 20, 15, 5],
-                            backgroundColor: ['#FF6B35', '#FFD23F', '#6B7280', '#10B981', '#8B5CF6']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
-                    }
-                });
+        function adminLogout() {
+            sessionStorage.removeItem('currentBusiness');
+            sessionStorage.removeItem('adminLoggedIn');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('adminNav').style.display = 'none';
+        }
+
+        // Chart rendering functions
+        function renderServicesChart(appointments) {
+            const serviceCount = {};
+            appointments.forEach(apt => {
+                serviceCount[apt.service] = (serviceCount[apt.service] || 0) + 1;
+            });
+
+            const chartHTML = Object.entries(serviceCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([service, count]) => {
+                    const percentage = (count / appointments.length) * 100;
+                    return `
+                        <div class="chart-bar-item">
+                            <span class="chart-label">${service}</span>
+                            <div class="chart-bar">
+                                <div class="chart-bar-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <span class="chart-value">${count}</span>
+                        </div>
+                    `;
+                })
+                .join('');
+
+            document.getElementById('servicesChart').innerHTML = chartHTML || '<p class="empty-chart">No data yet</p>';
+        }
+
+        function renderPeakHoursChart(appointments) {
+            const hourCount = {};
+            appointments.forEach(apt => {
+                const hour = apt.time.split(':')[0];
+                hourCount[hour] = (hourCount[hour] || 0) + 1;
+            });
+
+            const maxCount = Math.max(...Object.values(hourCount), 1);
+            const chartHTML = Object.entries(hourCount)
+                .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+                .map(([hour, count]) => {
+                    const percentage = (count / maxCount) * 100;
+                    return `
+                        <div class="chart-bar-item">
+                            <span class="chart-label">${hour}:00</span>
+                            <div class="chart-bar">
+                                <div class="chart-bar-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <span class="chart-value">${count}</span>
+                        </div>
+                    `;
+                })
+                .join('');
+
+            document.getElementById('peakHoursChart').innerHTML = chartHTML || '<p class="empty-chart">No data yet</p>';
+        }
+
+        // Enhanced loadDashboard function
+        function loadDashboard() {
+            const businessId = sessionStorage.getItem('currentBusiness');
+            if (!businessId) return;
+
+            const business = businesses[businessId];
+            const appointments = getAppointments(businessId);
+
+            // Update business info
+            document.getElementById('businessName').textContent = business.name;
+            document.getElementById('businessLocation').textContent = `📍 ${business.location}`;
+
+            // Calculate stats
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(apt => apt.date === today);
+            const upcomingAppointments = appointments.filter(apt => apt.date >= today);
+            const totalRevenue = appointments.reduce((sum, apt) => sum + apt.servicePrice, 0);
+
+            // Update stat cards
+            document.getElementById('totalBookings').textContent = appointments.length;
+            document.getElementById('todayBookings').textContent = todayAppointments.length;
+            document.getElementById('totalRevenue').textContent = `GHS ${totalRevenue}`;
+            document.getElementById('upcomingCount').textContent = upcomingAppointments.length;
+
+            // Calculate customer insights
+            const uniquePhones = new Set(appointments.map(apt => apt.customerPhone));
+            const phoneCount = {};
+            appointments.forEach(apt => {
+                phoneCount[apt.customerPhone] = (phoneCount[apt.customerPhone] || 0) + 1;
+            });
+            const returning = Object.values(phoneCount).filter(count => count > 1).length;
+            const newCustomers = uniquePhones.size - returning;
+            const retentionRate = uniquePhones.size > 0 ? Math.round((returning / uniquePhones.size) * 100) : 0;
+
+            document.getElementById('newCustomers').textContent = newCustomers;
+            document.getElementById('returningCustomers').textContent = returning;
+            document.getElementById('retentionRate').textContent = retentionRate + '%';
+
+            // Render charts
+            if (appointments.length > 0) {
+                renderServicesChart(appointments);
+                renderPeakHoursChart(appointments);
             }
 
-            // Peak Hours Chart
-            const peakCtx = document.getElementById('peakHoursChart');
-            if (peakCtx) {
-                new Chart(peakCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM'],
-                        datasets: [{
-                            label: 'Bookings',
-                            data: [5, 8, 12, 15, 10, 18, 20, 14, 8],
-                            backgroundColor: '#FF6B35'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } }
-                    }
-                });
+            // Load appointments table
+            loadAppointmentsTable(appointments);
+        }
+
+        function loadAppointmentsTable(appointments) {
+            const tbody = document.getElementById('appointmentsTableBody');
+
+            if (appointments.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-table">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No appointments yet</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
             }
 
-            // Staff Performance Chart
-            const staffCtx = document.getElementById('staffChart');
-            if (staffCtx) {
-                new Chart(staffCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                        datasets: [{
-                            label: 'Bookings',
-                            data: [12, 15, 18, 20, 17, 25],
-                            borderColor: '#10B981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                });
+            // Sort by date (newest first)
+            appointments.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+
+            tbody.innerHTML = appointments.map(apt => {
+                const aptDate = new Date(apt.date);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                aptDate.setHours(0, 0, 0, 0);
+
+                let status = 'pending';
+                let statusIcon = '🔜';
+                let statusText = 'Upcoming';
+
+                if (aptDate < today) {
+                    status = 'completed';
+                    statusIcon = '✅';
+                    statusText = 'Completed';
+                } else if (aptDate.getTime() === today.getTime()) {
+                    status = 'today';
+                    statusIcon = '⭐';
+                    statusText = 'Today';
+                }
+
+                return `
+                    <tr class="appointment-row status-${status}">
+                        <td>${formatDate(apt.date)}</td>
+                        <td><strong>${apt.time}</strong></td>
+                        <td>${apt.customerName}</td>
+                        <td>${apt.customerPhone}</td>
+                        <td>${apt.service}</td>
+                        <td><strong>GHS ${apt.servicePrice}</strong></td>
+                        <td><span class="status-badge status-${status}">${statusIcon} ${statusText}</span></td>
+                        <td>
+                            <button onclick="viewAppointment(${apt.id})" class="btn-icon" title="View">👁️</button>
+                            <button onclick="deleteAppointmentAdmin('${apt.id}')" class="btn-icon danger" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('en-GB', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+        }
+
+        function deleteAppointmentAdmin(aptId) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                const businessId = sessionStorage.getItem('currentBusiness');
+                deleteAppointment(businessId, parseInt(aptId));
+                loadDashboard();
             }
         }
 
-        // Initialize charts when dashboard loads
-        setTimeout(initCharts, 500);
+        function viewAppointment(aptId) {
+            const businessId = sessionStorage.getItem('currentBusiness');
+            const appointments = getAppointments(businessId);
+            const apt = appointments.find(a => a.id === aptId);
 
-        // Theme toggle
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            const icon = document.querySelector('.theme-toggle');
-            icon.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+            if (apt) {
+                alert(`
+Appointment Details:
+━━━━━━━━━━━━━━━━
+Customer: ${apt.customerName}
+Phone: ${apt.customerPhone}
+Service: ${apt.service}
+Date: ${formatDate(apt.date)}
+Time: ${apt.time}
+Price: GHS ${apt.servicePrice}
+${apt.specialRequests ? `\nNotes: ${apt.specialRequests}` : ''}
+                `);
+            }
         }
+
+        // Table filtering
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+                const businessId = sessionStorage.getItem('currentBusiness');
+                const allAppointments = getAppointments(businessId);
+
+                let filtered = allAppointments;
+                const today = new Date().toISOString().split('T')[0];
+
+                if (filter === 'today') {
+                    filtered = allAppointments.filter(apt => apt.date === today);
+                } else if (filter === 'upcoming') {
+                    filtered = allAppointments.filter(apt => apt.date >= today);
+                } else if (filter === 'past') {
+                    filtered = allAppointments.filter(apt => apt.date < today);
+                }
+
+                loadAppointmentsTable(filtered);
+            });
+        });
     </script>
 </body>
 </html>
