@@ -1,153 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Same head as index, plus -->
     <title>Admin Dashboard - Ghana Salon Booking</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>🪒 Ghana Salon Booking - Admin</h1>
-            </div>
-            <nav>
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <button onclick="logout()" class="btn btn-secondary btn-small" id="logoutBtn" style="display: none;">Logout</button>
-            </nav>
-        </div>
-    </header>
+    <!-- Modern sidebar nav -->
+    <aside class="sidebar">
+        <div class="logo">🇬🇭 Admin</div>
+        <nav class="sidebar-nav">
+            <a href="#" class="active"><span>📊</span> Dashboard</a>
+            <a href="#"><span>📅</span> Appointments</a>
+            <a href="#"><span>👥</span> Staff</a>
+            <a href="#"><span>💰</span> Revenue</a>
+            <a href="#" onclick="logout()">🚪 Logout</a>
+        </nav>
+    </aside>
 
-    <section class="admin-section" id="loginSection">
-        <div class="container">
-            <div class="login-card">
-                <h2>Admin Login</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="businessSelect">Select Business</label>
-                        <select id="businessSelect" required>
-                            <option value="">Choose business...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="adminPassword">Password</label>
-                        <input type="password" id="adminPassword" required>
-                        <small>Demo password: admin123</small>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
+    <main class="admin-main">
+        <!-- Header with business select & search -->
+        <header class="admin-header">
+            <h1 id="businessName">Your Salon Dashboard</h1>
+            <div class="header-actions">
+                <select id="businessSelect"></select>
+                <input type="search" placeholder="Search appointments..." class="search-bar">
+                <button class="theme-toggle">🌙</button>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <section class="admin-section" id="dashboardSection" style="display: none;">
-        <div class="container">
-            <div class="dashboard-header">
-                <div>
-                    <h2 id="businessName">Business Dashboard</h2>
-                    <p id="businessLocation"></p>
-                </div>
+        <!-- Stats Cards -->
+        <section class="stats-grid">
+            <div class="stat-card primary">
+                <h4>Total Bookings</h4>
+                <p class="stat-number" id="totalBookings">124</p>
             </div>
+            <div class="stat-card success">
+                <h4>Today's Revenue</h4>
+                <p class="stat-number" id="todayRevenue">GHS 2,450</p>
+            </div>
+            <!-- More cards... -->
+        </section>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h4>Total Bookings</h4>
-                    <p class="stat-number" id="totalBookings">0</p>
-                </div>
-                <div class="stat-card">
-                    <h4>Today's Bookings</h4>
-                    <p class="stat-number" id="todayBookings">0</p>
-                </div>
-                <div class="stat-card">
-                    <h4>Total Revenue</h4>
-                    <p class="stat-number" id="totalRevenue">GHS 0</p>
-                </div>
-                <div class="stat-card">
-                    <h4>Upcoming</h4>
-                    <p class="stat-number" id="upcomingCount">0</p>
+        <!-- Charts Row -->
+        <section class="charts-row">
+            <div class="chart-card">
+                <h4>Popular Services</h4>
+                <canvas id="servicesChart"></canvas>
+            </div>
+            <!-- Peak hours, staff perf charts -->
+        </section>
+
+        <!-- Appointments Table -->
+        <section class="table-section">
+            <div class="table-header">
+                <h3>Recent Appointments</h3>
+                <div class="filters">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Today</button>
                 </div>
             </div>
-
-            <div class="analytics-section">
-                <h3>Analytics</h3>
-                <div class="analytics-grid">
-                    <div class="analytics-card">
-                        <h4>Popular Services</h4>
-                        <div id="popularServices" class="chart-container"></div>
-                    </div>
-                    <div class="analytics-card">
-                        <h4>Peak Hours</h4>
-                        <div id="peakHours" class="chart-container"></div>
-                    </div>
-                    <div class="analytics-card">
-                        <h4>Staff Performance</h4>
-                        <div id="staffPerformance" class="chart-container"></div>
-                    </div>
-                    <div class="analytics-card">
-                        <h4>Customer Retention</h4>
-                        <div class="retention-stats">
-                            <div class="stat"><strong id="newCustomers">0</strong><span>New</span></div>
-                            <div class="stat"><strong id="returningCustomers">0</strong><span>Returning</span></div>
-                            <div class="stat"><strong id="retentionRate">0%</strong><span>Retention</span></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr><th>Date</th><th>Client</th><th>Service</th><th>Price</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="appointmentsTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
             </div>
+        </section>
+    </main>
 
-            <div class="appointments-section">
-                <div class="section-header">
-                    <h3>Appointments</h3>
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" onclick="filterAppointments('all')">All</button>
-                        <button class="filter-btn" onclick="filterAppointments('today')">Today</button>
-                        <button class="filter-btn" onclick="filterAppointments('upcoming')">Upcoming</button>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="appointments-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Customer</th>
-                                <th>Phone</th>
-                                <th>Staff</th>
-                                <th>Service</th>
-                                <th>Price</th>
-                                <th>Payment</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="appointmentsTableBody">
-                            <tr><td colspan="9" class="no-data">No appointments yet</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div id="deleteModal" class="modal">
-        <div class="modal-content">
-            <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete this appointment?</p>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- Your Scripts -->
-    <script src="firebase-config.js"></script>
-    <script src="database-manager.js"></script>
-    <script src="translations.js"></script>
-    <script src="enhanced-script.js"></script>
+    <!-- Scripts + your existing ones + Chart init -->
+    <script>
+        // Example chart setup - integrate with your Firebase data
+        const ctx = document.getElementById('servicesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: ['Fades', 'Braids', 'Relaxer'], datasets: [{ data: [50, 30, 20], backgroundColor: ['#FF6B35', '#FFD23F', '#6B7280'] }] }
+        });
+    </script>
+    <!-- Your scripts... -->
 </body>
 </html>
